@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You - Legacy Crew</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      text-align: center;
+      background: rgba(30, 30, 30, 0.95);
+      border-radius: 12px;
+      padding: 60px 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .logo {
+      max-width: 180px;
+      margin-bottom: 30px;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    }
+
+    .icon {
+      font-size: 5em;
+      margin-bottom: 30px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #fff;
+      margin-bottom: 20px;
+      letter-spacing: 3px;
+    }
+
+    .subtitle {
+      font-size: 1.2em;
+      color: #6c63ff;
+      font-style: italic;
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+
+    p {
+      font-size: 1.1em;
+      color: #ccc;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .message-box {
+      background: rgba(40, 40, 40, 0.8);
+      border-left: 4px solid #6c63ff;
+      padding: 25px;
+      margin: 30px 0;
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .message-box h3 {
+      color: #fff;
+      margin-bottom: 15px;
+      font-size: 1.3em;
+    }
+
+    .message-box p {
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, #6c63ff 0%, #5a52d5 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(108, 99, 255, 0.4);
+    }
+
+    .footer {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #888;
+      font-size: 0.9em;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 40px 20px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      .icon {
+        font-size: 3.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://i.imgur.com/Wwn9Drg.png" alt="Legacy Crew Logo" class="logo">
+    
+    <div class="icon">🎵</div>
+    
+    <h1>FILES RECEIVED</h1>
+    <p class="subtitle">Processing Has Begun</p>
+
+    <div class="message-box">
+      <h3>What Happens Next?</h3>
+      <p>✓ Your files have been securely uploaded to our system</p>
+      <p>✓ Our team will review your submission within 24-48 hours</p>
+      <p>✓ You'll receive updates at the email address you provided</p>
+      <p>✓ We'll reach out if we need any additional information</p>
+    </div>
+
+    <p>
+      Thank you for trusting Legacy Crew with your music.<br>
+      We're excited to help bring your vision to life.
+    </p>
+
+    <a href="index.html" class="cta-button">Submit Another Project</a>
+
+    <div class="footer">
+      <p>Questions? Contact us at prod@thelegacycrew.com</p>
+      <p style="margin-top: 10px; font-size: 0.85em;">© 2024 Legacy Crew. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
