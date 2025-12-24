@@ -15,6 +15,7 @@
     </header>
 
     <form id="uploadForm" class="upload-form">
+      <!-- Service Selection -->
       <div class="form-section">
         <h2>Select Service</h2>
         <div class="service-selector">
@@ -35,113 +36,104 @@
         </div>
       </div>
 
-      <div class="form-section">
-        <h2>Contact Information</h2>
-        <p class="info-text">This information will appear on your receipt</p>
-        
-        <div class="form-group">
-          <label for="artistName">Artist Name *</label>
-          <input type="text" id="artistName" name="artistName" required>
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email *</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-
-        <div class="form-group">
-          <label for="phone">Phone Number *</label>
-          <input type="tel" id="phone" name="phone" required>
-        </div>
-
-        <div class="form-group">
-          <label for="projectName">Project/Song Name *</label>
-          <input type="text" id="projectName" name="projectName" required>
-        </div>
-      </div>
-
-      <div id="masteringFiles" class="form-section file-section" style="display: none;">
-        <h2>Upload Files</h2>
-        
-        <div class="form-group">
-          <label for="finalVersion">Final Version File *</label>
-          <p class="help-text">Your final mix file and/or previously mastered song</p>
-          <input type="file" id="finalVersion" name="finalVersion" accept=".wav,.mp3,.aiff,.aif,.flac,.m4a,.ogg,.wma,.aac,.alac,.mp4,.mov,.avi,.mkv,.wmv,.flv,.webm,.zip,.rar">
-          <div class="file-info" id="finalVersionInfo"></div>
-        </div>
-      </div>
-
-      <div id="mixingFiles" class="form-section file-section" style="display: none;">
-        <h2>Upload Files</h2>
-        
-        <div class="form-group">
-          <label for="vocalStems">Vocal Stems * (Up to 10 files)</label>
-          <input type="file" id="vocalStems" name="vocalStems" multiple accept=".wav,.mp3,.aiff,.aif,.flac,.m4a,.ogg,.wma,.aac,.alac,.mp4,.mov,.avi,.mkv,.wmv,.flv,.webm,.zip,.rar">
-          <div class="file-info" id="vocalStemsInfo"></div>
-        </div>
-
-        <div class="form-group">
-          <label for="instrumental">Instrumental *</label>
-          <input type="file" id="instrumental" name="instrumental" accept=".wav,.mp3,.aiff,.aif,.flac,.m4a,.ogg,.wma,.aac,.alac,.mp4,.mov,.avi,.mkv,.wmv,.flv,.webm,.zip,.rar">
-          <div class="file-info" id="instrumentalInfo"></div>
-        </div>
-
-        <div class="form-group">
-          <label for="reference">Reference Track *</label>
-          <input type="file" id="reference" name="reference" accept=".wav,.mp3,.aiff,.aif,.flac,.m4a,.ogg,.wma,.aac,.alac,.mp4,.mov,.avi,.mkv,.wmv,.flv,.webm,.zip,.rar">
-          <div class="file-info" id="referenceInfo"></div>
-        </div>
-
-        <div class="form-group">
-          <label for="masteredFinal">Mastered Final (Optional)</label>
-          <input type="file" id="masteredFinal" name="masteredFinal" accept=".wav,.mp3,.aiff,.aif,.flac,.m4a,.ogg,.wma,.aac,.alac,.mp4,.mov,.avi,.mkv,.wmv,.flv,.webm,.zip,.rar">
-          <div class="file-info" id="masteredFinalInfo"></div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h2>Additional Information</h2>
-        <p class="info-text">While not required, this information helps us deliver better results</p>
-        
-        <div class="form-row">
+      <!-- Form Fields - Hidden until service selected -->
+      <div id="formFields">
+        <!-- Contact Information -->
+        <div class="form-section">
+          <h2>Contact Information</h2>
+          <p class="info-text">This information will appear on your receipt</p>
+          
           <div class="form-group">
-            <label for="songKey">Song Key</label>
-            <input type="text" id="songKey" name="songKey" placeholder="e.g., C Major, A Minor">
+            <label for="artistName">Artist Name *</label>
+            <input type="text" id="artistName" name="artistName" required>
           </div>
 
           <div class="form-group">
-            <label for="bpm">BPM</label>
-            <input type="number" id="bpm" name="bpm" placeholder="e.g., 120">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+
+          <div class="form-group">
+            <label for="songTitle">Song Title *</label>
+            <input type="text" id="songTitle" name="songTitle" required>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="notes">Notes/Requests</label>
-          <p class="help-text"><strong>Strongly encouraged</strong> for best results</p>
-          <textarea id="notes" name="notes" rows="5" placeholder="Tell us about your vision, reference tracks, specific requests, or any details that will help us deliver exactly what you're looking for..."></textarea>
+        <!-- Project Details -->
+        <div class="form-section">
+          <h2>Project Details</h2>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bpm">BPM (Beats Per Minute)</label>
+              <input type="number" id="bpm" name="bpm" min="1" max="300">
+            </div>
+
+            <div class="form-group">
+              <label for="key">Musical Key</label>
+              <input type="text" id="key" name="key" placeholder="e.g., C Major, A Minor">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Additional Notes</label>
+            <p class="help-text">Tell us about your vision, reference tracks, or specific requirements</p>
+            <textarea id="notes" name="notes" rows="4"></textarea>
+          </div>
         </div>
-      </div>
 
-      <div id="progressSection" style="display: none;">
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
+        <!-- File Upload Section -->
+        <div class="form-section">
+          <h2>Upload Files</h2>
+          <p class="info-text" id="uploadInstructions">Please select a service type to see upload requirements</p>
+          
+          <div class="file-upload-section" id="dropZone">
+            <p style="font-size: 1.2em; margin-bottom: 15px;">📁 Drop files here or click to browse</p>
+            <p class="help-text" id="fileRequirements">
+              <strong>Mastering:</strong> Upload your final stereo mix (WAV, MP3, FLAC)<br>
+              <strong>Mixing:</strong> Upload individual stems/tracks
+            </p>
+            <input type="file" id="fileInput" multiple accept="audio/*,.wav,.mp3,.flac,.aiff,.m4a">
+            <label for="fileInput" class="upload-button">Choose Files</label>
+            <div id="fileList" class="file-list"></div>
+          </div>
         </div>
-        <div class="progress-details" id="progressDetails"></div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-button" id="submitBtn">
+          Submit to The Core
+        </button>
       </div>
-
-      <div id="errorMessage" class="error-message" style="display: none;"></div>
-
-      <button type="submit" id="submitBtn" class="submit-btn">
-        Submit Files
-      </button>
     </form>
 
-    <div id="successMessage" class="success-message" style="display: none;">
-      <div class="success-icon">✓</div>
-      <h2>Files Successfully Uploaded!</h2>
-      <p>Your submission has been received and processing has begun.</p>
-      <p class="redirect-text">Redirecting to thank you page in <span id="countdown">15</span> seconds...</p>
+    <!-- Progress Section -->
+    <div id="progressSection">
+      <div class="progress-container">
+        <div class="overall-progress">
+          <div class="progress-label">
+            <span>Overall Progress</span>
+            <span id="overallPercentage">0%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" id="overallProgress"></div>
+          </div>
+        </div>
+        <div id="fileProgressList"></div>
+      </div>
     </div>
+
+    <!-- Success Message -->
+    <div id="successMessage">
+      ✓ Files uploaded successfully! Redirecting to confirmation page...
+    </div>
+
+    <!-- Error Message -->
+    <div id="errorMessage"></div>
   </div>
 
   <script src="script.js"></script>
