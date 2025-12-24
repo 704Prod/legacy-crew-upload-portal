@@ -20,14 +20,14 @@
         <h2>Select Service</h2>
         <div class="service-selector">
           <label class="service-option">
-            <input type="radio" name="serviceType" value="Initial/Re-Mastering" required>
+            <input type="radio" name="serviceType" value="Initial/Re-Mastering" id="serviceTypeMastering" required>
             <div class="service-card">
               <h3>Initial/Re-Mastering</h3>
               <p>Professional mastering for your final mix</p>
             </div>
           </label>
           <label class="service-option">
-            <input type="radio" name="serviceType" value="Mixing">
+            <input type="radio" name="serviceType" value="Mixing" id="serviceTypeMixing">
             <div class="service-card">
               <h3>Mixing</h3>
               <p>Full mixing service from stems to final product</p>
@@ -136,6 +136,48 @@
     <div id="errorMessage"></div>
   </div>
 
+  <!-- Inline JavaScript for form expansion (backup) -->
+  <script>
+    // Show form fields when service is selected - INLINE VERSION
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page loaded - setting up service selection');
+      
+      const serviceRadios = document.querySelectorAll('input[name="serviceType"]');
+      const formFields = document.getElementById('formFields');
+      
+      console.log('Found service radios:', serviceRadios.length);
+      console.log('Found formFields div:', formFields ? 'YES' : 'NO');
+      
+      serviceRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+          console.log('Service selected:', this.value);
+          if (this.checked) {
+            formFields.classList.add('show');
+            console.log('Added "show" class to formFields');
+            
+            // Smooth scroll to form fields
+            setTimeout(() => {
+              formFields.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 300);
+          }
+        });
+        
+        // Also add click listener as backup
+        radio.parentElement.addEventListener('click', function() {
+          console.log('Service card clicked');
+          const input = this.querySelector('input[type="radio"]');
+          if (input && !input.checked) {
+            input.checked = true;
+            formFields.classList.add('show');
+            setTimeout(() => {
+              formFields.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 300);
+          }
+        });
+      });
+    });
+  </script>
+  
   <script src="script.js"></script>
 </body>
 </html>
