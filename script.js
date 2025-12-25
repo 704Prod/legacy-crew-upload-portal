@@ -1,5 +1,5 @@
 // REPLACE THIS WITH YOUR ACTUAL AZURE FUNCTION URL
-const AZURE_FUNCTION_URL = 'https://legacy-crew-upload-func-h2gkhbgnfjdrhzht.westcentralus-01.azurewebsites.net/api/FileUpload';
+const AZURE_FUNCTION_URL = 'https://legacy-crew-upload-v2-e8h4akc0brdsh5hd.westcentralus-01.azurewebsites.net/api/fileupload';
 
 // Show form fields when service is selected
 document.addEventListener('DOMContentLoaded', function() {
