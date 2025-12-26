@@ -3,18 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thank You - Legacy Crew</title>
+  <title>Files Received - Legacy Crew</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-      color: #e0e0e0;
+    .success-container {
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -22,143 +14,131 @@
       padding: 20px;
     }
 
-    .container {
-      max-width: 700px;
+    .success-content {
       text-align: center;
-      background: rgba(30, 30, 30, 0.95);
-      border-radius: 12px;
-      padding: 60px 40px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      max-width: 700px;
     }
 
-    .logo {
-      max-width: 180px;
+    .success-icon {
+      font-size: 4em;
       margin-bottom: 30px;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      animation: fadeIn 1s ease-in;
     }
 
-    .icon {
-      font-size: 5em;
-      margin-bottom: 30px;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
-
-    h1 {
-      font-size: 2.5em;
+    .success-title {
+      font-size: 3em;
+      font-weight: 900;
+      letter-spacing: 8px;
       color: #fff;
+      text-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
       margin-bottom: 20px;
-      letter-spacing: 3px;
     }
 
-    .subtitle {
+    .success-subtitle {
       font-size: 1.2em;
-      color: #6c63ff;
+      color: #ff0000;
+      margin-bottom: 40px;
       font-style: italic;
-      margin-bottom: 30px;
-      letter-spacing: 1px;
     }
 
-    p {
-      font-size: 1.1em;
-      color: #ccc;
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
-
-    .message-box {
-      background: rgba(40, 40, 40, 0.8);
-      border-left: 4px solid #6c63ff;
-      padding: 25px;
-      margin: 30px 0;
-      border-radius: 8px;
+    .info-box {
+      background: rgba(20, 20, 20, 0.9);
+      border: 2px solid rgba(255, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 40px;
+      margin: 40px 0;
       text-align: left;
     }
 
-    .message-box h3 {
-      color: #fff;
-      margin-bottom: 15px;
+    .info-box h3 {
+      color: #ff0000;
+      font-size: 1.4em;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    .info-item::before {
+      content: '✓';
+      color: #ff0000;
       font-size: 1.3em;
+      margin-right: 15px;
+      flex-shrink: 0;
     }
 
-    .message-box p {
-      font-size: 1em;
-      margin-bottom: 10px;
-    }
-
-    .cta-button {
+    .return-button {
       display: inline-block;
-      margin-top: 30px;
-      padding: 15px 40px;
-      background: linear-gradient(135deg, #6c63ff 0%, #5a52d5 100%);
-      color: white;
+      padding: 18px 40px;
+      background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+      color: #fff;
+      border: 2px solid #ff0000;
+      border-radius: 10px;
+      font-size: 1.1em;
+      font-weight: 700;
       text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      transition: all 0.3s ease;
       text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.3s ease;
+      margin-top: 30px;
+      box-shadow: 0 8px 25px rgba(255, 0, 0, 0.4);
     }
 
-    .cta-button:hover {
+    .return-button:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(108, 99, 255, 0.4);
+      box-shadow: 0 12px 35px rgba(255, 0, 0, 0.6);
     }
 
-    .footer {
-      margin-top: 40px;
-      padding-top: 30px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      color: #888;
-      font-size: 0.9em;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 40px 20px;
-      }
-
-      h1 {
-        font-size: 1.8em;
-      }
-
-      .icon {
-        font-size: 3.5em;
-      }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <img src="https://i.imgur.com/Wwn9Drg.png" alt="Legacy Crew Logo" class="logo">
-    
-    <div class="icon">🎵</div>
-    
-    <h1>FILES RECEIVED</h1>
-    <p class="subtitle">Processing Has Begun</p>
+  <div class="success-container">
+    <div class="container">
+      <div class="success-content">
+        <div class="success-icon">🎵</div>
+        
+        <h1 class="success-title">FILES RECEIVED</h1>
+        <p class="success-subtitle">Processing Has Begun</p>
 
-    <div class="message-box">
-      <h3>What Happens Next?</h3>
-      <p>✓ Your files have been securely uploaded to our system</p>
-      <p>✓ Our team will review your submission within 24-48 hours</p>
-      <p>✓ You'll receive updates at the email address you provided</p>
-      <p>✓ We'll reach out if we need any additional information</p>
-    </div>
+        <div class="info-box">
+          <h3>What Happens Next?</h3>
+          
+          <div class="info-item">
+            Your files have been securely uploaded to our system
+          </div>
+          
+          <div class="info-item">
+            Our team will review your submission within 24-48 hours
+          </div>
+          
+          <div class="info-item">
+            You'll receive updates at the email address you provided
+          </div>
+          
+          <div class="info-item">
+            We'll reach out if we need any additional information
+          </div>
+        </div>
 
-    <p>
-      Thank you for trusting Legacy Crew with your music.<br>
-      We're excited to help bring your vision to life.
-    </p>
+        <p style="color: #999; margin: 30px 0; line-height: 1.8;">
+          Thank you for trusting Legacy Crew with your music.<br>
+          We're excited to help bring your vision to life.
+        </p>
 
-    <a href="index.html" class="cta-button">Submit Another Project</a>
-
-    <div class="footer">
-      <p>Questions? Contact us at prod@thelegacycrew.com</p>
-      <p style="margin-top: 10px; font-size: 0.85em;">© 2024 Legacy Crew. All rights reserved.</p>
+        <a href="https://thelegacycrew.com" class="return-button">
+          Return to Website
+        </a>
+      </div>
     </div>
   </div>
 </body>
