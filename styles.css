@@ -258,23 +258,50 @@ h1 {
   line-height: 1.6;
 }
 
-.service-features {
-  list-style: none;
-  margin-bottom: 25px;
+/* Service Card Pricing Badge - NEW */
+.service-price {
+  display: block;
+  background: rgba(0, 255, 0, 0.2);
+  color: #00ff00;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 15px 0;
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  letter-spacing: 1px;
+  text-align: center;
 }
 
+/* Service Features List - UPDATED */
+.service-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  list-style: none;
+}
+
+.service-features span,
 .service-features li {
   color: #999;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
   margin-bottom: 8px;
   padding-left: 20px;
   position: relative;
 }
 
+.service-features span::before,
 .service-features li::before {
   content: '✓';
   position: absolute;
   left: 0;
   color: #ff0000;
+  margin-right: 5px;
 }
 
 .select-service-btn {
@@ -521,6 +548,12 @@ h1 {
   margin-right: 15px;
 }
 
+/* File Category Labels - NEW */
+.file-name::before {
+  margin-right: 8px;
+  font-weight: bold;
+}
+
 .file-size {
   color: #888;
   font-size: 0.85em;
@@ -575,6 +608,17 @@ h1 {
 .extra-files-option input[type="checkbox"] {
   margin-right: 10px;
   cursor: pointer;
+}
+
+/* File Note for Extra Cost - NEW */
+.file-note {
+  background: rgba(255, 170, 0, 0.1);
+  border-left: 3px solid #ffaa00;
+  padding: 10px 15px;
+  margin: 15px 0;
+  border-radius: 0 8px 8px 0;
+  color: #ffcc66;
+  font-size: 0.9em;
 }
 
 /* Remaster Option */
@@ -701,12 +745,31 @@ h1 {
   background: rgba(255, 0, 0, 0.1);
 }
 
+/* Submit Button Enable/Disable States - UPDATED */
 .next-step-btn:disabled,
 .submit-button:disabled {
   background: rgba(100, 100, 100, 0.3);
   border-color: #444;
   cursor: not-allowed;
   opacity: 0.6;
+  animation: none;
+}
+
+.submit-button:not(:disabled) {
+  animation: buttonPulse 2s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    box-shadow: 
+      0 8px 25px rgba(255, 0, 0, 0.4),
+      0 0 40px rgba(255, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 12px 35px rgba(255, 0, 0, 0.6),
+      0 0 60px rgba(255, 0, 0, 0.4);
+  }
 }
 
 .step-navigation {
@@ -774,8 +837,22 @@ h1 {
   padding-left: 20px;
 }
 
-/* Price Summary */
+/* Price Summary and Display - UPDATED */
+.price-display {
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%);
+  border: 2px solid rgba(255, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 25px 0;
+  display: none;
+}
+
+#formFields.show .price-display {
+  display: block;
+}
+
 .price-summary {
+  text-align: center;
   background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%);
   border: 2px solid rgba(255, 0, 0, 0.3);
   border-radius: 12px;
@@ -795,6 +872,7 @@ h1 {
   margin: 10px 0;
   color: #aaa;
   padding: 8px 0;
+  font-size: 1em;
 }
 
 .price-total {
@@ -873,6 +951,7 @@ h1 {
   box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
 }
 
+/* Progress Text Addition - NEW */
 .progress-text {
   display: block;
   text-align: center;
@@ -880,6 +959,7 @@ h1 {
   color: #fff;
   font-weight: bold;
   font-size: 1.2em;
+  font-style: italic;
 }
 
 /* Success/Error Messages */
@@ -911,6 +991,29 @@ h1 {
 #errorMessage h2 {
   color: #ff0000;
   margin-bottom: 20px;
+}
+
+/* Status Badge Styles (for thankyou page) - NEW */
+.status-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+  }
 }
 
 /* Mobile Optimizations */
@@ -997,6 +1100,25 @@ h1 {
   .remove-file {
     padding: 10px 18px;
     font-size: 0.95em;
+  }
+
+  /* Mobile optimizations for new elements - NEW */
+  .service-price {
+    font-size: 1.1em;
+    padding: 10px 15px;
+  }
+  
+  .price-display {
+    padding: 15px;
+  }
+  
+  .price-total {
+    font-size: 1.2em;
+  }
+  
+  .file-note {
+    font-size: 0.85em;
+    padding: 8px 12px;
   }
 }
 
