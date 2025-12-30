@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Legacy Crew - The Core | Music Improvement Portal</title>
+  <title>Legacy Crew - The Core | Music Production Portal</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <header>
       <img src="https://i.imgur.com/Wwn9Drg.png" alt="Legacy Crew Logo" class="logo">
       <h1>THE CORE</h1>
-      <p class="subtitle">Music Improvement Portal</p>
+      <p class="subtitle">Music Production Portal</p>
     </header>
 
     <form id="uploadForm" class="upload-form">
@@ -22,15 +22,27 @@
           <label class="service-option">
             <input type="radio" name="serviceType" value="Initial/Re-Mastering" id="serviceTypeMastering" required>
             <div class="service-card">
-              <h3>Initial/Re-Mastering</h3>
-              <p>Professional mastering for your final mix</p>
+              <h3>Mastering</h3>
+              <p>Final loudness, balance, and clarity adjustments for existing mixes</p>
+              <div class="service-price">$15 flat</div>
+              <div class="service-features">
+                <span>✓ Professional polish</span>
+                <span>✓ Light corrective work</span>
+                <span>✓ Platform optimization</span>
+              </div>
             </div>
           </label>
           <label class="service-option">
             <input type="radio" name="serviceType" value="Mixing" id="serviceTypeMixing">
             <div class="service-card">
               <h3>Mixing</h3>
-              <p>Full mixing service from stems to final product</p>
+              <p>Full mix of vocal stems and instrumental with mastering included</p>
+              <div class="service-price">$30 flat</div>
+              <div class="service-features">
+                <span>✓ Professional mixing</span>
+                <span>✓ Mastering included</span>
+                <span>✓ Reference matching</span>
+              </div>
             </div>
           </label>
         </div>
@@ -38,6 +50,9 @@
 
       <!-- Form Fields - Hidden until service selected -->
       <div id="formFields">
+        <!-- Price Display -->
+        <div id="priceDisplay" class="price-display"></div>
+
         <!-- Contact Information -->
         <div class="form-section">
           <h2>Contact Information</h2>
@@ -98,6 +113,9 @@
               <strong>Mastering:</strong> Upload your final stereo mix (WAV, MP3, FLAC)<br>
               <strong>Mixing:</strong> Upload individual stems/tracks
             </p>
+            <div class="file-note">
+              💡 Vocal files over 10 will incur $0.50 per extra file
+            </div>
             <input type="file" id="fileInput" multiple accept="audio/*,.wav,.mp3,.flac,.aiff,.m4a">
             <label for="fileInput" class="upload-button">Choose Files</label>
             <div id="fileList" class="file-list"></div>
@@ -105,7 +123,7 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="submit-button" id="submitBtn">
+        <button type="submit" class="submit-button" id="submitButton" disabled>
           Submit to The Core
         </button>
       </div>
@@ -120,8 +138,9 @@
             <span id="overallPercentage">0%</span>
           </div>
           <div class="progress-bar-container">
-            <div class="progress-bar" id="overallProgress"></div>
+            <div class="progress-bar" id="progressBar"></div>
           </div>
+          <div class="progress-text" id="progressText">Uploading files...</div>
         </div>
         <div id="fileProgressList"></div>
       </div>
