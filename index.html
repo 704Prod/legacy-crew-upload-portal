@@ -24,11 +24,11 @@
             <div class="service-card">
               <h3>Mastering</h3>
               <p>Final loudness, balance, and clarity adjustments for existing mixes</p>
-              <div class="service-price">$15 flat</div>
+              <div class="service-price">$15</div>
               <div class="service-features">
-                <span>✓ Professional polish</span>
-                <span>✓ Light corrective work</span>
-                <span>✓ Platform optimization</span>
+                <span>Professional polish</span>
+                <span>Light corrective work</span>
+                <span>Platform optimization</span>
               </div>
             </div>
           </label>
@@ -37,11 +37,11 @@
             <div class="service-card">
               <h3>Mixing</h3>
               <p>Full mix of vocal stems and instrumental with mastering included</p>
-              <div class="service-price">$30 flat</div>
+              <div class="service-price">$30</div>
               <div class="service-features">
-                <span>✓ Professional mixing</span>
-                <span>✓ Mastering included</span>
-                <span>✓ Reference matching</span>
+                <span>Professional mixing</span>
+                <span>Mastering included</span>
+                <span>Reference matching</span>
               </div>
             </div>
           </label>
@@ -108,17 +108,15 @@
           <p class="info-text" id="uploadInstructions">Please select a service type to see upload requirements</p>
           
           <div class="file-upload-section" id="dropZone">
-            <p style="font-size: 1.2em; margin-bottom: 15px;">📁 Drop files here or click to browse</p>
+            <p class="drop-icon">📁</p>
+            <p class="drop-text">Drop files here or click to browse</p>
             <p class="help-text" id="fileRequirements">
               <strong>Mastering:</strong> Upload your final stereo mix (WAV, MP3, FLAC)<br>
               <strong>Mixing:</strong> Upload individual stems/tracks
             </p>
-            <div class="file-note">
-              💡 Vocal files over 10 will incur $0.50 per extra file
-            </div>
             <input type="file" id="fileInput" multiple accept="audio/*,.wav,.mp3,.flac,.aiff,.m4a">
-            <label for="fileInput" class="upload-button">Choose Files</label>
             <div id="fileList" class="file-list"></div>
+            <div id="fileWarning" class="file-note"></div>
           </div>
         </div>
 
@@ -129,7 +127,7 @@
       </div>
     </form>
 
-    <!-- Progress Section -->
+    <!-- Progress Section - Only shows after submit -->
     <div id="progressSection">
       <div class="progress-container">
         <div class="overall-progress">
@@ -140,9 +138,7 @@
           <div class="progress-bar-container">
             <div class="progress-bar" id="progressBar"></div>
           </div>
-          <div class="progress-text" id="progressText">Uploading files...</div>
         </div>
-        <div id="fileProgressList"></div>
       </div>
     </div>
 
@@ -155,35 +151,24 @@
     <div id="errorMessage"></div>
   </div>
 
-  <!-- Inline JavaScript for form expansion (backup) -->
+  <!-- Inline JavaScript for form expansion -->
   <script>
-    // Show form fields when service is selected - INLINE VERSION
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('Page loaded - setting up service selection');
-      
       const serviceRadios = document.querySelectorAll('input[name="serviceType"]');
       const formFields = document.getElementById('formFields');
       
-      console.log('Found service radios:', serviceRadios.length);
-      console.log('Found formFields div:', formFields ? 'YES' : 'NO');
-      
       serviceRadios.forEach(radio => {
         radio.addEventListener('change', function() {
-          console.log('Service selected:', this.value);
           if (this.checked) {
             formFields.classList.add('show');
-            console.log('Added "show" class to formFields');
-            
-            // Smooth scroll to form fields
             setTimeout(() => {
               formFields.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 300);
           }
         });
         
-        // Also add click listener as backup
+        // Click on card to select
         radio.parentElement.addEventListener('click', function() {
-          console.log('Service card clicked');
           const input = this.querySelector('input[type="radio"]');
           if (input && !input.checked) {
             input.checked = true;
