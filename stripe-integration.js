@@ -1,6 +1,6 @@
 // STRIPE INTEGRATION - Embedded Payment Element
 // Replace with your actual Stripe publishable key
-const STRIPE_PUBLIC_KEY = 'pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'; // CHANGE THIS!
+const STRIPE_PUBLIC_KEY = 'pk_test_51SkFbsKyMVZiJynmWUtyBbZTWDQ8cASQCdv1Y2PmMIniONV3lTAHYQ3qJLgTbbLIVOwRjHKK1tSF1gHSPoJ1fjcJ00XK5IzuEP'; // CHANGE THIS!
 const stripe = Stripe(STRIPE_PUBLIC_KEY);
 
 // Payment Intent endpoint (add to your Azure Functions)
