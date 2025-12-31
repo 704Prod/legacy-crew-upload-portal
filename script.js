@@ -186,7 +186,7 @@ function handleFiles(files, category, listId, counterId) {
   
   // Check for warnings
   updateWarnings();
-  updateSubmitButton();
+  updatecontinueButton();
 }
 
 // Remove file
@@ -223,7 +223,7 @@ window.removeFile = function(category, fileName, listId, counterId) {
   }
   
   updateWarnings();
-  updateSubmitButton();
+  updatecontinueButton();
 };
 
 // Update file counter display
@@ -316,9 +316,9 @@ function updatePriceDisplay() {
 }
 
 // Update submit button state
-function updateSubmitButton() {
-  const submitButton = document.getElementById('submitButton');
-  if (!submitButton) return;
+function updatecontinueButton() {
+  const continueButton = document.getElementById('continueButton');
+  if (!continueButton) return;
   
   // Check if required files are uploaded
   let hasRequired = false;
@@ -337,7 +337,7 @@ function updateSubmitButton() {
     hasRequired = FILE_CATEGORIES.master.files.length > 0;
   }
   
-  submitButton.disabled = !hasRequired;
+  continueButton.disabled = !hasRequired;
 }
 
 // Format file size
