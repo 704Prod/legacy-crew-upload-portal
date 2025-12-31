@@ -1,5 +1,6 @@
 // STRIPE INTEGRATION - Embedded Payment Element
 // Replace with your actual Stripe publishable key
+const AZURE_FUNCTION_URL = 'https://legacy-crew-upload-v2-e8h4akc0brdsh5hd.westcentralus-01.azurewebsites.net/api/FileUpload';
 const STRIPE_PUBLIC_KEY = 'pk_test_51SkFbsKyMVZiJynmWUtyBbZTWDQ8cASQCdv1Y2PmMIniONV3lTAHYQ3qJLgTbbLIVOwRjHKK1tSF1gHSPoJ1fjcJ00XK5IzuEP'; // CHANGE THIS!
 const stripe = Stripe(STRIPE_PUBLIC_KEY);
 
