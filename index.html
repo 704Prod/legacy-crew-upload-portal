@@ -105,19 +105,201 @@
         <!-- File Upload Section -->
         <div class="form-section">
           <h2>Upload Files</h2>
-          <p class="info-text" id="uploadInstructions">Please select a service type to see upload requirements</p>
           
-          <div class="file-upload-section" id="dropZone">
-            <p class="drop-icon">📁</p>
-            <p class="drop-text">Drop files here or click to browse</p>
-            <p class="help-text" id="fileRequirements">
-              <strong>Mastering:</strong> Upload your final stereo mix (WAV, MP3, FLAC)<br>
-              <strong>Mixing:</strong> Upload individual stems/tracks
-            </p>
-            <input type="file" id="fileInput" multiple accept="audio/*,.wav,.mp3,.flac,.aiff,.m4a">
-            <div id="fileList" class="file-list"></div>
-            <div id="fileWarning" class="file-note"></div>
+          <!-- Upload Mode Toggle (only for mixing) -->
+          <div id="uploadModeToggle" class="upload-mode-toggle" style="display: none;">
+            <button type="button" class="mode-btn active" onclick="setUploadMode('basic')">Basic</button>
+            <button type="button" class="mode-btn" onclick="setUploadMode('advanced')">Advanced</button>
+            <span class="mode-hint">Use Advanced mode to organize vocals by type</span>
           </div>
+
+          <!-- MIXING UPLOAD BOXES -->
+          <div id="mixingUploads" style="display: none;">
+            
+            <!-- Basic Mode -->
+            <div id="basicMode" class="upload-mode">
+              
+              <!-- Vocal Stems Upload Box -->
+              <div class="upload-box required">
+                <div class="box-header">
+                  <span class="box-icon">🎤</span>
+                  <h3>Vocal Stems</h3>
+                  <span class="required-badge">Required</span>
+                  <span class="file-counter" id="vocalCounter">0/10 files</span>
+                </div>
+                <p class="helper-text">Upload all vocal tracks separately (lead, harmonies, ad-libs)</p>
+                <div class="recommendation">24-bit WAV @ 48kHz recommended for best quality</div>
+                <div class="drop-zone" id="vocalDropZone" data-category="vocals">
+                  <p class="drop-text">Drop vocal files here or click to browse</p>
+                  <input type="file" id="vocalFiles" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="vocalFileList"></div>
+                <div id="vocalExtraWarning" class="extra-warning"></div>
+              </div>
+
+              <!-- Instrumental Upload Box -->
+              <div class="upload-box required">
+                <div class="box-header">
+                  <span class="box-icon">🎵</span>
+                  <h3>Instrumental</h3>
+                  <span class="required-badge">Required</span>
+                </div>
+                <p class="helper-text">Upload the beat/music without vocals</p>
+                <div class="recommendation">Leaving -6dB headroom helps us achieve the best sound</div>
+                <div class="drop-zone" id="instrumentalDropZone" data-category="instrumental">
+                  <p class="drop-text">Drop instrumental files here or click to browse</p>
+                  <input type="file" id="instrumentalFiles" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="instrumentalFileList"></div>
+              </div>
+
+              <!-- SFX Upload Box -->
+              <div class="upload-box optional">
+                <div class="box-header">
+                  <span class="box-icon">🎭</span>
+                  <h3>SFX/Additional Elements</h3>
+                  <span class="optional-badge">Optional</span>
+                </div>
+                <p class="helper-text">Drops, risers, voice tags, special effects</p>
+                <div class="note-recommended">Recommended: Including unique sound elements helps create your complete vision</div>
+                <div class="drop-zone" id="sfxDropZone" data-category="sfx">
+                  <p class="drop-text">Drop SFX files here or click to browse</p>
+                  <input type="file" id="sfxFiles" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="sfxFileList"></div>
+              </div>
+
+              <!-- Reference Track Upload Box -->
+              <div class="upload-box optional highly-recommended">
+                <div class="box-header">
+                  <span class="box-icon">📊</span>
+                  <h3>Reference Track</h3>
+                  <span class="optional-badge">Optional</span>
+                </div>
+                <p class="helper-text">Upload your rough mix to show how everything should blend</p>
+                <div class="note-highly-recommended">⚡ HIGHLY RECOMMENDED: This helps us deliver exactly what you're looking for</div>
+                <div class="drop-zone" id="referenceDropZone" data-category="reference">
+                  <p class="drop-text">Drop reference track here or click to browse</p>
+                  <input type="file" id="referenceFiles" accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="referenceFileList"></div>
+              </div>
+            </div>
+
+            <!-- Advanced Mode -->
+            <div id="advancedMode" class="upload-mode" style="display: none;">
+              
+              <!-- Lead Vocals -->
+              <div class="upload-box">
+                <div class="box-header">
+                  <span class="box-icon">🎤</span>
+                  <h3>Lead Vocals</h3>
+                  <span class="file-counter" id="leadCounter">0/10 files</span>
+                </div>
+                <div class="drop-zone" id="leadDropZone" data-category="lead-vocals">
+                  <p class="drop-text">Drop lead vocal files here</p>
+                  <input type="file" id="leadFiles" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="leadFileList"></div>
+              </div>
+
+              <!-- Background Vocals -->
+              <div class="upload-box">
+                <div class="box-header">
+                  <span class="box-icon">🎤</span>
+                  <h3>Background/Harmonies</h3>
+                  <span class="file-counter" id="bgCounter">0/10 files</span>
+                </div>
+                <div class="drop-zone" id="bgDropZone" data-category="bg-vocals">
+                  <p class="drop-text">Drop harmony files here</p>
+                  <input type="file" id="bgFiles" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="bgFileList"></div>
+              </div>
+
+              <!-- Adlibs -->
+              <div class="upload-box">
+                <div class="box-header">
+                  <span class="box-icon">🎤</span>
+                  <h3>Adlibs</h3>
+                  <span class="file-counter" id="adlibCounter">0/10 files</span>
+                </div>
+                <div class="drop-zone" id="adlibDropZone" data-category="adlibs">
+                  <p class="drop-text">Drop adlib files here</p>
+                  <input type="file" id="adlibFiles" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="adlibFileList"></div>
+              </div>
+
+              <!-- Instrumental (same in advanced) -->
+              <div class="upload-box required">
+                <div class="box-header">
+                  <span class="box-icon">🎵</span>
+                  <h3>Instrumental</h3>
+                  <span class="required-badge">Required</span>
+                </div>
+                <div class="drop-zone" id="advInstrumentalDropZone" data-category="adv-instrumental">
+                  <p class="drop-text">Drop instrumental files here</p>
+                  <input type="file" id="advInstrumentalFiles" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="advInstrumentalFileList"></div>
+              </div>
+
+              <!-- SFX in Advanced -->
+              <div class="upload-box">
+                <div class="box-header">
+                  <span class="box-icon">🎭</span>
+                  <h3>Sound Effects</h3>
+                </div>
+                <div class="drop-zone" id="advSfxDropZone" data-category="adv-sfx">
+                  <p class="drop-text">Drop SFX files here</p>
+                  <input type="file" id="advSfxFiles" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="advSfxFileList"></div>
+              </div>
+
+              <!-- Reference in Advanced -->
+              <div class="upload-box highly-recommended">
+                <div class="box-header">
+                  <span class="box-icon">📊</span>
+                  <h3>Reference Track</h3>
+                </div>
+                <div class="note-highly-recommended">⚡ HIGHLY RECOMMENDED</div>
+                <div class="drop-zone" id="advReferenceDropZone" data-category="adv-reference">
+                  <p class="drop-text">Drop reference track here</p>
+                  <input type="file" id="advReferenceFiles" accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="advReferenceFileList"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MASTERING UPLOAD BOX -->
+          <div id="masteringUploads" style="display: none;">
+            <div class="upload-box required">
+              <div class="box-header">
+                <span class="box-icon">🎧</span>
+                <h3>Final Mix</h3>
+                <span class="required-badge">Required</span>
+              </div>
+              <p class="helper-text">Upload your mixed song for mastering</p>
+              <div class="recommendation">Best results with 24-bit WAV, -3dB to -6dB headroom</div>
+              <div class="remaster-option">
+                <label>
+                  <input type="checkbox" id="isRemaster">
+                  This is a re-master of a previous master
+                </label>
+              </div>
+              <div class="drop-zone" id="masterDropZone" data-category="master">
+                <p class="drop-text">Drop your final mix here or click to browse</p>
+                <input type="file" id="masterFiles" accept="audio/*" style="display: none;">
+              </div>
+              <div class="file-list" id="masterFileList"></div>
+            </div>
+          </div>
+
+          <!-- Global file warning -->
+          <div id="globalFileWarning" class="file-warning"></div>
         </div>
 
         <!-- Submit Button -->
@@ -151,37 +333,6 @@
     <div id="errorMessage"></div>
   </div>
 
-  <!-- Inline JavaScript for form expansion -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const serviceRadios = document.querySelectorAll('input[name="serviceType"]');
-      const formFields = document.getElementById('formFields');
-      
-      serviceRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-          if (this.checked) {
-            formFields.classList.add('show');
-            setTimeout(() => {
-              formFields.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 300);
-          }
-        });
-        
-        // Click on card to select
-        radio.parentElement.addEventListener('click', function() {
-          const input = this.querySelector('input[type="radio"]');
-          if (input && !input.checked) {
-            input.checked = true;
-            formFields.classList.add('show');
-            setTimeout(() => {
-              formFields.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 300);
-          }
-        });
-      });
-    });
-  </script>
-  
   <script src="script.js"></script>
 </body>
 </html>
