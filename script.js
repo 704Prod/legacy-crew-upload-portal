@@ -1,6 +1,3 @@
-// AZURE FUNCTION URL
-const AZURE_FUNCTION_URL = 'https://legacy-crew-upload-v2-e8h4akc0brdsh5hd.westcentralus-01.azurewebsites.net/api/FileUpload';
-
 // Service pricing
 const SERVICE_PRICING = {
   'Mixing': 30.00,
