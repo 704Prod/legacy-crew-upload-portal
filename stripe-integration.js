@@ -5,7 +5,7 @@ const STRIPE_PUBLIC_KEY = 'pk_test_51SkFbsKyMVZiJynmWUtyBbZTWDQ8cASQCdv1Y2PmMIni
 const stripe = Stripe(STRIPE_PUBLIC_KEY);
 
 // Payment Intent endpoint (add to your Azure Functions)
-const PAYMENT_ENDPOINT = 'https://legacy-crew-upload-v2-e8h4akc0brdsh5hd.westcentralus-01.azurewebsites.net/api/CreatePaymentIntent';
+const PAYMENT_ENDPOINT = 'https://legacy-crew-upload-v2-e8h4akc0brdsh5hd.westcentralus-01.azurewebsites.net/api/createpaymentintent';
 const CONFIRM_PAYMENT_ENDPOINT = 'https://legacy-crew-upload-v2-e8h4akc0brdsh5hd.westcentralus-01.azurewebsites.net/api/confirm-payment';
 
 let elements;
