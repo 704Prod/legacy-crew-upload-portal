@@ -62,11 +62,11 @@ app.http('FileUpload', {
             const driveId = await getDriveId();
             
             // Create project folder in Song Improvement Services
-            const folder = await graphClient
+            await graphClient
                 .api(`/drives/${driveId}/root:/Song Improvement Services/${folderName}:/children`)
                 .put({
-                    name: 'temp.txt',
-                    content: 'temp'
+                    name: 'placeholder.txt',
+                    content: 'placeholder'
                 });
             
             // Process and upload files with versioning
@@ -74,26 +74,28 @@ app.http('FileUpload', {
             const uploadedFiles = {};
             
             for (const file of files) {
-                // Extract category from filename prefix (vocals_, instrumental_, etc.)
-                const originalPrefix = file.filename.split('_')[0];
+                // The filename from frontend already has prefix like "vocals_filename.wav"
+                const parts = file.filename.split('_');
+                const category = parts[0]; // "vocals", "instrumental", etc.
+                const originalName = parts.slice(1).join('_'); // Rest of filename
                 
                 // Count files per category for versioning
-                if (!categoryCounters[originalPrefix]) {
-                    categoryCounters[originalPrefix] = 0;
-                    uploadedFiles[originalPrefix] = [];
+                if (!categoryCounters[category]) {
+                    categoryCounters[category] = 0;
+                    uploadedFiles[category] = [];
                 }
-                categoryCounters[originalPrefix]++;
+                categoryCounters[category]++;
                 
                 // Create versioned filename
-                const extension = path.extname(file.filename.split('_').slice(1).join('_'));
-                const newFilename = `${originalPrefix}_V${categoryCounters[originalPrefix]}${extension}`;
+                const extension = path.extname(originalName);
+                const newFilename = `${category}_V${categoryCounters[category]}${extension}`;
                 
                 // Upload file to project folder
                 await graphClient
                     .api(`/drives/${driveId}/root:/Song Improvement Services/${folderName}/${newFilename}:/content`)
                     .put(file.data);
                 
-                uploadedFiles[originalPrefix].push(newFilename);
+                uploadedFiles[category].push(newFilename);
             }
             
             // Create manifest JSON
@@ -104,14 +106,14 @@ app.http('FileUpload', {
                 song: fields.songTitle,
                 email: fields.email,
                 phone: fields.phone,
-                bpm: fields.bpm,
-                key: fields.key,
-                notes: fields.notes,
+                bpm: fields.bpm || '',
+                key: fields.key || '',
+                notes: fields.notes || '',
                 submittedAt: now.toISOString(),
                 payment: {
-                    amount: fields.totalPrice,
-                    paymentId: fields.paymentIntentId,
-                    status: fields.paymentStatus
+                    amount: fields.totalPrice || '0',
+                    paymentId: fields.paymentIntentId || '',
+                    status: fields.paymentStatus || ''
                 },
                 files: uploadedFiles
             };
@@ -119,7 +121,7 @@ app.http('FileUpload', {
             // Save manifest to project folder
             await graphClient
                 .api(`/drives/${driveId}/root:/Song Improvement Services/${folderName}/project_manifest.json:/content`)
-                .put(JSON.stringify(manifest, null, 2));
+                .put(Buffer.from(JSON.stringify(manifest, null, 2)));
             
             return {
                 status: 200,
@@ -145,14 +147,13 @@ app.http('FileUpload', {
                 },
                 body: JSON.stringify({
                     success: false,
-                    error: error.message
+                    error: error.message || 'Unknown error occurred'
                 })
             };
         }
     }
 });
 
-// Helper functions remain the same
 async function getDriveId() {
     const site = await graphClient
         .api(`/sites/${process.env.SHAREPOINT_SITE_ID}`)
@@ -166,7 +167,7 @@ async function getDriveId() {
 }
 
 async function parseMultipartForm(request) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const busboy = Busboy({ headers: { 'content-type': request.headers.get('content-type') } });
         const fields = {};
         const files = [];
@@ -192,12 +193,20 @@ async function parseMultipartForm(request) {
         busboy.on('finish', () => resolve({ fields, files }));
         busboy.on('error', reject);
         
-        const bodyBuffer = request.arrayBuffer ? 
-            Buffer.from(await request.arrayBuffer()) : 
-            Buffer.from(await request.text());
-        busboy.write(bodyBuffer);
-        busboy.end();
+        try {
+            const bodyBuffer = Buffer.from(await request.arrayBuffer());
+            busboy.write(bodyBuffer);
+            busboy.end();
+        } catch (error) {
+            reject(error);
+        }
     });
 }
 
-module.exports = { FileUpload: app.http('FileUpload', handler) };
+module.exports = { FileUpload: app.http('FileUpload', { 
+    methods: ['POST', 'OPTIONS'],
+    authLevel: 'anonymous',
+    handler: async (request, context) => {
+        return app.http('FileUpload').handler(request, context);
+    }
+}) };
