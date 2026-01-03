@@ -145,12 +145,15 @@
   function showServiceUI(serviceValue) {
     selectedService = serviceValue;
     console.log("ShowServiceUI called with:", serviceValue);
+     console.log("formFields computed BEFORE:", getComputedStyle(document.getElementById("formFields")).display);
+
 
     // Show form fields area - CRITICAL
     const formFields = document.getElementById("formFields");
     if (formFields) {
       formFields.style.setProperty("display", "block", "important");
       console.log("Form fields shown (forced !important)");
+       console.log("formFields computed AFTER:", getComputedStyle(formFields).display);
     }
 
     // Price display
