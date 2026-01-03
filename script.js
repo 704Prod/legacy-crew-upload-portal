@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function setupServiceSelection() {
   const serviceRadios = document.querySelectorAll('input[name="serviceType"]');
   const formFields = document.getElementById('formFields');
-  
+
   serviceRadios.forEach(radio => {
     radio.addEventListener('change', function() {
       if (this.checked) {
         selectedService = this.value;
         formFields.classList.add('show');
-        
+
         // Show appropriate upload section
         if (selectedService === 'Mixing') {
           document.getElementById('mixingUploads').style.display = 'block';
@@ -52,9 +52,9 @@ function setupServiceSelection() {
           document.getElementById('uploadModeToggle').style.display = 'none';
           document.getElementById('masteringUploads').style.display = 'block';
         }
-        
+
         updatePriceDisplay();
-        
+
         // Smooth scroll
         setTimeout(() => {
           formFields.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -66,23 +66,34 @@ function setupServiceSelection() {
 
 // Mode toggle for mixing
 function setupModeToggle() {
-  window.setUploadMode = function(mode) {
+  // IMPORTANT: index.html must call setUploadMode(event, 'basic'|'advanced')
+  window.setUploadMode = function(e, mode) {
     currentMode = mode;
-    
-    // Update buttons
+
+    // Update buttons (safe even if called without a click event)
     document.querySelectorAll('.mode-btn').forEach(btn => {
       btn.classList.remove('active');
     });
-    event.target.classList.add('active');
-    
-    // Show/hide modes
-    if (mode === 'basic') {
-      document.getElementById('basicMode').style.display = 'block';
-      document.getElementById('advancedMode').style.display = 'none';
-    } else {
-      document.getElementById('basicMode').style.display = 'none';
-      document.getElementById('advancedMode').style.display = 'block';
+    if (e && e.target) {
+      e.target.classList.add('active');
     }
+
+    // Show/hide modes (guard against missing elements)
+    const basic = document.getElementById('basicMode');
+    const advanced = document.getElementById('advancedMode');
+    if (!basic || !advanced) return;
+
+    if (mode === 'basic') {
+      basic.style.display = 'block';
+      advanced.style.display = 'none';
+    } else {
+      basic.style.display = 'none';
+      advanced.style.display = 'block';
+    }
+
+    // Keep totals/UI consistent with the active mode
+    updateWarnings();
+    updatecontinueButton();
   };
 }
 
@@ -102,11 +113,11 @@ function setupDropZones() {
     { zone: 'advReferenceDropZone', input: 'advReferenceFiles', category: 'adv-reference', list: 'advReferenceFileList' },
     { zone: 'masterDropZone', input: 'masterFiles', category: 'master', list: 'masterFileList' }
   ];
-  
+
   dropZones.forEach(config => {
     const dropZone = document.getElementById(config.zone);
     const fileInput = document.getElementById(config.input);
-    
+
     if (dropZone && fileInput) {
       // Click to upload
       dropZone.addEventListener('click', (e) => {
@@ -114,23 +125,23 @@ function setupDropZones() {
           fileInput.click();
         }
       });
-      
+
       // File input change
       fileInput.addEventListener('change', function() {
         handleFiles(this.files, config.category, config.list, config.counter);
       });
-      
+
       // Drag over
       dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
         dropZone.classList.add('drag-over');
       });
-      
+
       // Drag leave
       dropZone.addEventListener('dragleave', () => {
         dropZone.classList.remove('drag-over');
       });
-      
+
       // Drop
       dropZone.addEventListener('drop', (e) => {
         e.preventDefault();
@@ -146,19 +157,19 @@ function handleFiles(files, category, listId, counterId) {
   const fileArray = Array.from(files);
   const categoryData = FILE_CATEGORIES[category];
   const fileList = document.getElementById(listId);
-  
+
   // Check category limit
   if (categoryData.limit && categoryData.files.length + fileArray.length > categoryData.limit) {
     alert(`This category has a limit of ${categoryData.limit} file(s).`);
     return;
   }
-  
+
   // Add files
   fileArray.forEach(file => {
     // Auto-rename file
     const renamedFile = new File([file], categoryData.prefix + file.name, { type: file.type });
     categoryData.files.push(renamedFile);
-    
+
     // Display file
     const fileItem = document.createElement('div');
     fileItem.className = 'file-item';
@@ -169,18 +180,18 @@ function handleFiles(files, category, listId, counterId) {
     `;
     fileList.appendChild(fileItem);
   });
-  
+
   // Update counter if exists
   if (counterId) {
     updateFileCounter(category, counterId);
   }
-  
+
   // Update drop zone appearance
   const dropZone = document.getElementById(listId).previousElementSibling;
   if (dropZone && categoryData.files.length > 0) {
     dropZone.classList.add('has-files');
   }
-  
+
   // Check for warnings
   updateWarnings();
   updatecontinueButton();
@@ -189,10 +200,10 @@ function handleFiles(files, category, listId, counterId) {
 // Remove file
 window.removeFile = function(category, fileName, listId, counterId) {
   const categoryData = FILE_CATEGORIES[category];
-  
+
   // Remove from array
   categoryData.files = categoryData.files.filter(f => !f.name.endsWith(fileName));
-  
+
   // Rebuild display
   const fileList = document.getElementById(listId);
   fileList.innerHTML = '';
@@ -207,18 +218,18 @@ window.removeFile = function(category, fileName, listId, counterId) {
     `;
     fileList.appendChild(fileItem);
   });
-  
+
   // Update counter
   if (counterId) {
     updateFileCounter(category, counterId);
   }
-  
+
   // Update drop zone
   const dropZone = fileList.previousElementSibling;
   if (dropZone && categoryData.files.length === 0) {
     dropZone.classList.remove('has-files');
   }
-  
+
   updateWarnings();
   updatecontinueButton();
 };
@@ -227,13 +238,13 @@ window.removeFile = function(category, fileName, listId, counterId) {
 function updateFileCounter(category, counterId) {
   const counter = document.getElementById(counterId);
   if (!counter) return;
-  
+
   const categoryData = FILE_CATEGORIES[category];
   const count = categoryData.files.length;
   const limit = categoryData.limit;
-  
+
   counter.textContent = `${count}/${limit} files`;
-  
+
   // Update counter color based on count
   counter.classList.remove('warning', 'full');
   if (count >= 8 && count < 10) {
@@ -241,7 +252,7 @@ function updateFileCounter(category, counterId) {
   } else if (count >= 10) {
     counter.classList.add('full');
   }
-  
+
   // Show extra warning for vocals if over 10
   if (category === 'vocals' && count > 10) {
     const warning = document.getElementById('vocalExtraWarning');
@@ -267,9 +278,9 @@ function updateWarnings() {
     if (currentMode === 'advanced' && !key.includes('adv-') && !key.includes('-vocals')) return;
     total += FILE_CATEGORIES[key].files.length;
   });
-  
+
   totalFileCount = total;
-  
+
   // Show warning at 8+ total files
   const globalWarning = document.getElementById('globalFileWarning');
   if (globalWarning) {
@@ -280,7 +291,7 @@ function updateWarnings() {
       globalWarning.classList.remove('show');
     }
   }
-  
+
   updatePriceDisplay();
 }
 
@@ -288,27 +299,27 @@ function updateWarnings() {
 function updatePriceDisplay() {
   const priceDisplay = document.getElementById('priceDisplay');
   if (!priceDisplay || !selectedService) return;
-  
+
   const basePrice = SERVICE_PRICING[selectedService];
   let extraCost = 0;
-  
+
   // Calculate extra files cost
   if (totalFileCount > 10) {
     extraCost = (totalFileCount - 10) * 0.50;
   }
-  
+
   const totalPrice = basePrice + extraCost;
-  
+
   let priceHTML = '<div class="price-summary">';
   priceHTML += `<div class="price-line">Base Service: $${basePrice.toFixed(2)}</div>`;
-  
+
   if (extraCost > 0) {
     priceHTML += `<div class="price-line">Extra Files (${totalFileCount - 10} × $0.50): $${extraCost.toFixed(2)}</div>`;
   }
-  
+
   priceHTML += `<div class="price-total">Total: $${totalPrice.toFixed(2)}</div>`;
   priceHTML += '</div>';
-  
+
   priceDisplay.innerHTML = priceHTML;
 }
 
@@ -316,13 +327,13 @@ function updatePriceDisplay() {
 function updatecontinueButton() {
   const continueButton = document.getElementById('continueButton');
   if (!continueButton) return;
-  
+
   // Check if required files are uploaded
   let hasRequired = false;
-  
+
   if (selectedService === 'Mixing') {
     if (currentMode === 'basic') {
-      hasRequired = FILE_CATEGORIES.vocals.files.length > 0 && 
+      hasRequired = FILE_CATEGORIES.vocals.files.length > 0 &&
                    FILE_CATEGORIES.instrumental.files.length > 0;
     } else {
       const hasVocals = FILE_CATEGORIES['lead-vocals'].files.length > 0 ||
@@ -333,7 +344,7 @@ function updatecontinueButton() {
   } else {
     hasRequired = FILE_CATEGORIES.master.files.length > 0;
   }
-  
+
   continueButton.disabled = !hasRequired;
 }
 
@@ -352,14 +363,14 @@ document.addEventListener('DOMContentLoaded', function() {
   if (uploadForm) {
     uploadForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       // Show progress
       const progressSection = document.getElementById('progressSection');
       progressSection.classList.add('active');
-      
+
       const progressBar = document.getElementById('progressBar');
       const progressPercentage = document.getElementById('overallPercentage');
-      
+
       // Prepare form data
       const formData = new FormData();
       formData.append('serviceType', selectedService);
@@ -370,19 +381,19 @@ document.addEventListener('DOMContentLoaded', function() {
       formData.append('bpm', document.getElementById('bpm').value || 'Not specified');
       formData.append('key', document.getElementById('key').value || 'Not specified');
       formData.append('notes', document.getElementById('notes').value || 'None');
-      
+
       // Add remaster flag if checked
       if (selectedService === 'Initial/Re-Mastering') {
         const isRemaster = document.getElementById('isRemaster').checked;
         formData.append('isRemaster', isRemaster);
       }
-      
+
       // Calculate price
       const basePrice = SERVICE_PRICING[selectedService];
       const extraCost = totalFileCount > 10 ? (totalFileCount - 10) * 0.50 : 0;
       const totalPrice = basePrice + extraCost;
       formData.append('totalPrice', totalPrice.toFixed(2));
-      
+
       // Add all files with prefixes
       Object.keys(FILE_CATEGORIES).forEach(key => {
         const category = FILE_CATEGORIES[key];
@@ -390,35 +401,35 @@ document.addEventListener('DOMContentLoaded', function() {
           formData.append('files', file);
         });
       });
-      
+
       // Simulate progress
       let progress = 0;
       const progressInterval = setInterval(() => {
         progress += 10;
         progressBar.style.width = progress + '%';
         progressPercentage.textContent = progress + '%';
-        
+
         if (progress >= 100) {
           clearInterval(progressInterval);
         }
       }, 300);
-      
+
       try {
         const response = await fetch(AZURE_FUNCTION_URL, {
           method: 'POST',
           body: formData
         });
-        
+
         if (response.ok) {
           // Store for thank you page
           sessionStorage.setItem('orderStatus', 'Queued');
           sessionStorage.setItem('orderService', selectedService);
           sessionStorage.setItem('orderPrice', totalPrice.toFixed(2));
           sessionStorage.setItem('songTitle', document.getElementById('songTitle').value);
-          
+
           // Show success
           document.getElementById('successMessage').style.display = 'block';
-          
+
           // Redirect
           setTimeout(() => {
             window.location.href = 'thankyou.html';
