@@ -149,8 +149,8 @@
     // Show form fields area - CRITICAL
     const formFields = document.getElementById("formFields");
     if (formFields) {
-      formFields.style.display = "block";
-      console.log("Form fields shown");
+      formFields.style.setProperty("display", "block", "important");
+      console.log("Form fields shown (forced !important)");
     }
 
     // Price display
