@@ -47,9 +47,4 @@ __pycache__/
 # Azurite artifacts
 __blobstorage__
 __queuestorage__
-__azurite_db*__.json# Ignore local editor settings
-legacy-crew-function/.vscode/
-
-# Optional: OS noise
-.DS_Store
-Thumbs.db
+__azurite_db*__.json
