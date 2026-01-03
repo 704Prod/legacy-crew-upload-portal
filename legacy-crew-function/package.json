@@ -1,0 +1,16 @@
+{
+  "name": "legacy-crew-function",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "start": "func start"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0",
+    "@azure/identity": "^4.0.0",
+    "@microsoft/microsoft-graph-client": "^3.0.0",
+    "isomorphic-fetch": "^3.0.0",
+    "stripe": "^20.1.0"
+  }
+}
