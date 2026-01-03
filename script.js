@@ -151,10 +151,17 @@
     // Show form fields area - CRITICAL
     const formFields = document.getElementById("formFields");
     if (formFields) {
-      formFields.style.setProperty("display", "block", "important");
-      console.log("Form fields shown (forced !important)");
-       console.log("formFields computed AFTER:", getComputedStyle(formFields).display);
-    }
+  formFields.style.setProperty("display", "block", "important");
+  console.log("Form fields shown (forced !important)");
+  console.log("formFields computed AFTER:", getComputedStyle(formFields).display);
+}
+
+// Auto-scroll to revealed form fields
+setTimeout(() => {
+  const el = document.getElementById("formFields");
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}, 0);
+
 
     // Price display
     const priceDisplay = document.getElementById("priceDisplay");
