@@ -1,8 +1,6 @@
 /* script.js — Legacy Crew Upload Portal (Basic/Advanced Mixing + Mastering)
-   - Matches the IDs in your posted index.html
-   - Fixes mode toggle, dropzone binding, required-file logic
-   - Fixes service card selection not triggering (delegated click)
-   - Ensures ONLY active mode files are counted and summarized
+   - Fixed to work with modified HTML structure with service cards
+   - Ensures service card clicks properly reveal form fields
 */
 
 (() => {
@@ -35,39 +33,6 @@
   let selectedService = null; // "Mixing" or "Initial/Re-Mastering"
   let uploadMode = "basic";   // "basic" or "advanced" (only used for mixing)
 
-  // ---------- DOM ----------
-  const formFields = document.getElementById("formFields");
-  const priceDisplay = document.getElementById("priceDisplay");
-  const continueButton = document.getElementById("continueButton");
-  const globalFileWarning = document.getElementById("globalFileWarning");
-
-  const mixingUploads = document.getElementById("mixingUploads");
-  const masteringUploads = document.getElementById("masteringUploads");
-  const uploadModeToggle = document.getElementById("uploadModeToggle");
-  const basicModeEl = document.getElementById("basicMode");
-  const advancedModeEl = document.getElementById("advancedMode");
-
-  const vocalCounter = document.getElementById("vocalCounter");
-  const leadCounter = document.getElementById("leadCounter");
-  const bgCounter = document.getElementById("bgCounter");
-  const adlibCounter = document.getElementById("adlibCounter");
-
-  // Summary fields (payment step)
-  const summaryService = document.getElementById("summaryService");
-  const summarySong = document.getElementById("summarySong");
-  const summaryArtist = document.getElementById("summaryArtist");
-  const summaryFiles = document.getElementById("summaryFiles");
-  const summaryTotal = document.getElementById("summaryTotal");
-  const basePriceLine = document.getElementById("basePrice");
-  const extraFilesLine = document.getElementById("extraFilesLine");
-
-  // Payment/section containers
-  const paymentSection = document.getElementById("paymentSection");
-
-  // Remaster option (may or may not exist depending on index.html)
-  const remasterOption = document.getElementById("remasterOption");
-  const isRemasterEl = document.getElementById("isRemaster");
-
   // ---------- Helpers ----------
   function money(n) {
     const v = Number.isFinite(n) ? n : 0;
@@ -75,17 +40,24 @@
   }
 
   function clearWarnings() {
+    const globalFileWarning = document.getElementById("globalFileWarning");
     if (globalFileWarning) globalFileWarning.textContent = "";
     const vocalExtraWarning = document.getElementById("vocalExtraWarning");
     if (vocalExtraWarning) vocalExtraWarning.textContent = "";
   }
 
   function setGlobalWarning(msg) {
+    const globalFileWarning = document.getElementById("globalFileWarning");
     if (!globalFileWarning) return;
     globalFileWarning.textContent = msg || "";
   }
 
   function updateCounters() {
+    const vocalCounter = document.getElementById("vocalCounter");
+    const leadCounter = document.getElementById("leadCounter");
+    const bgCounter = document.getElementById("bgCounter");
+    const adlibCounter = document.getElementById("adlibCounter");
+    
     if (vocalCounter) vocalCounter.textContent = `${FILE_CATEGORIES.vocals.files.length}/10 files`;
     if (leadCounter) leadCounter.textContent = `${FILE_CATEGORIES["lead-vocals"].files.length}/10 files`;
     if (bgCounter) bgCounter.textContent = `${FILE_CATEGORIES["bg-vocals"].files.length}/10 files`;
@@ -135,11 +107,15 @@
   }
 
   function updateContinueButtonState() {
+    const continueButton = document.getElementById("continueButton");
     if (!continueButton) return;
     continueButton.disabled = !requiredFilesSatisfied();
   }
 
   function applyUploadModeUI() {
+    const basicModeEl = document.getElementById("basicMode");
+    const advancedModeEl = document.getElementById("advancedMode");
+    
     if (!basicModeEl || !advancedModeEl) return;
 
     if (uploadMode === "basic") {
@@ -151,6 +127,7 @@
     }
 
     // Update active button state in toggle
+    const uploadModeToggle = document.getElementById("uploadModeToggle");
     if (uploadModeToggle) {
       const btns = uploadModeToggle.querySelectorAll(".mode-btn");
       btns.forEach((b) => b.classList.remove("active"));
@@ -167,11 +144,17 @@
 
   function showServiceUI(serviceValue) {
     selectedService = serviceValue;
+    console.log("ShowServiceUI called with:", serviceValue);
 
-    // Show form fields area
-    if (formFields) formFields.style.display = "block";
+    // Show form fields area - CRITICAL
+    const formFields = document.getElementById("formFields");
+    if (formFields) {
+      formFields.style.display = "block";
+      console.log("Form fields shown");
+    }
 
     // Price display
+    const priceDisplay = document.getElementById("priceDisplay");
     const base = SERVICE_PRICING[selectedService] || 0;
     if (priceDisplay) {
       priceDisplay.textContent =
@@ -181,6 +164,12 @@
     }
 
     clearWarnings();
+
+    const mixingUploads = document.getElementById("mixingUploads");
+    const masteringUploads = document.getElementById("masteringUploads");
+    const uploadModeToggle = document.getElementById("uploadModeToggle");
+    const remasterOption = document.getElementById("remasterOption");
+    const isRemasterEl = document.getElementById("isRemaster");
 
     if (selectedService === "Mixing") {
       if (mixingUploads) mixingUploads.style.display = "block";
@@ -346,6 +335,14 @@
     const base = SERVICE_PRICING[selectedService] || 0;
     const activeFiles = getActiveFilesFlat();
 
+    const summaryService = document.getElementById("summaryService");
+    const summarySong = document.getElementById("summarySong");
+    const summaryArtist = document.getElementById("summaryArtist");
+    const summaryFiles = document.getElementById("summaryFiles");
+    const summaryTotal = document.getElementById("summaryTotal");
+    const basePriceLine = document.getElementById("basePrice");
+    const extraFilesLine = document.getElementById("extraFilesLine");
+
     if (summaryService) summaryService.textContent = selectedService === "Mixing" ? "Mixing" : "Mastering";
     if (summarySong) summarySong.textContent = songTitle;
     if (summaryArtist) summaryArtist.textContent = artistName;
@@ -360,6 +357,8 @@
     if (summaryTotal) summaryTotal.textContent = money(base);
 
     const uploadForm = document.getElementById("uploadForm");
+    const paymentSection = document.getElementById("paymentSection");
+    
     if (uploadForm) uploadForm.style.display = "none";
     if (paymentSection) paymentSection.style.display = "block";
 
@@ -379,6 +378,7 @@
 
   window.backToFiles = function () {
     const uploadForm = document.getElementById("uploadForm");
+    const paymentSection = document.getElementById("paymentSection");
     if (paymentSection) paymentSection.style.display = "none";
     if (uploadForm) uploadForm.style.display = "block";
     clearWarnings();
@@ -387,78 +387,89 @@
 
   // ---------- Init ----------
   function initServiceSelection() {
+    console.log("Initializing service selection...");
+    
     const masteringRadio = document.getElementById("serviceTypeMastering");
     const mixingRadio = document.getElementById("serviceTypeMixing");
-    const selector = document.querySelector(".service-selector");
 
-    // Direct radio listener as a fallback
+    // APPROACH 1: Direct click handlers on service cards
+    const serviceCards = document.querySelectorAll(".service-card");
+    serviceCards.forEach(card => {
+      card.addEventListener("click", function(e) {
+        console.log("Service card clicked");
+        
+        // Find the parent label
+        const label = this.closest("label.service-option");
+        if (!label) return;
+        
+        // Find the radio input
+        const radio = label.querySelector('input[type="radio"]');
+        if (!radio) return;
+        
+        // Prevent default and stop propagation
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Force check the radio
+        radio.checked = true;
+        
+        // Force UI update
+        showServiceUI(radio.value);
+        
+        // Dispatch change event
+        radio.dispatchEvent(new Event("change", { bubbles: true }));
+        
+        console.log("Radio checked:", radio.value, radio.checked);
+      });
+    });
+
+    // APPROACH 2: Click handler on service options (labels)
+    const serviceOptions = document.querySelectorAll(".service-option");
+    serviceOptions.forEach(option => {
+      option.addEventListener("click", function(e) {
+        console.log("Service option clicked");
+        
+        const radio = this.querySelector('input[type="radio"]');
+        if (!radio) return;
+        
+        // If clicking on the radio itself, let default behavior handle it
+        if (e.target === radio) {
+          showServiceUI(radio.value);
+          return;
+        }
+        
+        // Otherwise manually handle the click
+        e.preventDefault();
+        radio.checked = true;
+        showServiceUI(radio.value);
+        radio.dispatchEvent(new Event("change", { bubbles: true }));
+        
+        console.log("Radio checked via option:", radio.value, radio.checked);
+      });
+    });
+
+    // APPROACH 3: Direct change listeners on radios as fallback
     if (masteringRadio) {
-      masteringRadio.addEventListener("change", (e) => {
-        if (e.target.checked) {
-          showServiceUI(e.target.value);
+      masteringRadio.addEventListener("change", function() {
+        console.log("Mastering radio changed:", this.checked);
+        if (this.checked) {
+          showServiceUI(this.value);
         }
       });
     }
 
     if (mixingRadio) {
-      mixingRadio.addEventListener("change", (e) => {
-        if (e.target.checked) {
-          showServiceUI(e.target.value);
+      mixingRadio.addEventListener("change", function() {
+        console.log("Mixing radio changed:", this.checked);
+        if (this.checked) {
+          showServiceUI(this.value);
         }
       });
     }
 
-    // Primary delegation handler for card/label clicks
-    if (selector) {
-      selector.addEventListener("click", (e) => {
-        // Find the closest service-option label
-        const label = e.target.closest("label.service-option");
-        if (!label) return;
-
-        // Find the radio input within this label
-        const radio = label.querySelector('input[type="radio"][name="serviceType"]');
-        if (!radio) return;
-
-        // Prevent default to handle manually
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Force check the radio
-        radio.checked = true;
-
-        // Reset payment section if user goes back and changes service
-        if (paymentSection) paymentSection.style.display = "none";
-        const uploadForm = document.getElementById("uploadForm");
-        if (uploadForm) uploadForm.style.display = "block";
-
-        // Force UI update
-        showServiceUI(radio.value);
-
-        // Dispatch change event
-        radio.dispatchEvent(new Event("change", { bubbles: true }));
-      });
-
-      // Add a direct click handler on service cards as additional failsafe
-      const serviceCards = selector.querySelectorAll(".service-card");
-      serviceCards.forEach(card => {
-        card.addEventListener("click", (e) => {
-          // If delegation didn't catch it, try direct approach
-          const parentLabel = card.closest("label.service-option");
-          if (!parentLabel) return;
-          
-          const radio = parentLabel.querySelector('input[type="radio"]');
-          if (!radio || radio.checked) return;
-
-          radio.checked = true;
-          showServiceUI(radio.value);
-          radio.dispatchEvent(new Event("change", { bubbles: true }));
-        });
-      });
-    }
-
-    // Log initialization for debugging
-    console.log("Service selection initialized", {
-      selector: !!selector,
+    console.log("Service selection initialized with:", {
+      serviceCards: serviceCards.length,
+      serviceOptions: serviceOptions.length,
       masteringRadio: !!masteringRadio,
       mixingRadio: !!mixingRadio
     });
@@ -483,17 +494,25 @@
   }
 
   function init() {
-    console.log("Init running - Legacy Crew Upload Portal");
+    console.log("=== Legacy Crew Portal Init ===");
+    console.log("DOM ready state:", document.readyState);
     
     // Hide fields until service selected
-    if (formFields) formFields.style.display = "none";
+    const formFields = document.getElementById("formFields");
+    if (formFields) {
+      formFields.style.display = "none";
+      console.log("Form fields hidden initially");
+    }
 
     // Start state
+    const mixingUploads = document.getElementById("mixingUploads");
+    const masteringUploads = document.getElementById("masteringUploads");
+    const uploadModeToggle = document.getElementById("uploadModeToggle");
+    const remasterOption = document.getElementById("remasterOption");
+    
     if (mixingUploads) mixingUploads.style.display = "none";
     if (masteringUploads) masteringUploads.style.display = "none";
     if (uploadModeToggle) uploadModeToggle.style.display = "none";
-
-    // Also hide remaster by default
     if (remasterOption) remasterOption.style.display = "none";
 
     initServiceSelection();
@@ -501,13 +520,17 @@
 
     updateCounters();
     updateContinueButtonState();
+    
+    console.log("=== Init Complete ===");
   }
 
-  // CRITICAL FIX: Ensure init runs regardless of DOM state
+  // CRITICAL: Run init regardless of DOM state
   if (document.readyState === "loading") {
+    console.log("Waiting for DOMContentLoaded...");
     document.addEventListener("DOMContentLoaded", init);
   } else {
-    // DOM already loaded (happens with cached scripts on GitHub Pages)
-    init();
+    console.log("DOM already loaded, running init immediately");
+    // Use timeout to ensure all scripts are loaded
+    setTimeout(init, 0);
   }
 })();
