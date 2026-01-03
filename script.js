@@ -1,6 +1,7 @@
 /* script.js — Legacy Crew Upload Portal (Basic/Advanced Mixing + Mastering)
    - Matches the IDs in your posted index.html
    - Fixes mode toggle, dropzone binding, required-file logic
+   - Fixes service card selection not triggering (delegated click)
    - Ensures ONLY active mode files are counted and summarized
 */
 
@@ -63,6 +64,10 @@
   // Payment/section containers
   const paymentSection = document.getElementById("paymentSection");
 
+  // Remaster option (may or may not exist depending on index.html)
+  const remasterOption = document.getElementById("remasterOption");
+  const isRemasterEl = document.getElementById("isRemaster");
+
   // ---------- Helpers ----------
   function money(n) {
     const v = Number.isFinite(n) ? n : 0;
@@ -80,29 +85,6 @@
     globalFileWarning.textContent = msg || "";
   }
 
-  function resetAllFiles() {
-    Object.keys(FILE_CATEGORIES).forEach((k) => (FILE_CATEGORIES[k].files = []));
-    // Clear UI lists
-    const lists = [
-      "vocalFileList",
-      "instrumentalFileList",
-      "referenceFileList",
-      "leadFileList",
-      "bgFileList",
-      "adlibFileList",
-      "advInstrumentalFileList",
-      "advSfxFileList",
-      "advReferenceFileList",
-      "masterFileList"
-    ];
-    lists.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.innerHTML = "";
-    });
-    updateCounters();
-    updateContinueButtonState();
-  }
-
   function updateCounters() {
     if (vocalCounter) vocalCounter.textContent = `${FILE_CATEGORIES.vocals.files.length}/10 files`;
     if (leadCounter) leadCounter.textContent = `${FILE_CATEGORIES["lead-vocals"].files.length}/10 files`;
@@ -111,14 +93,10 @@
   }
 
   function getActiveCategoryKeys() {
-    if (selectedService === "Initial/Re-Mastering") {
-      return ["master"];
-    }
+    if (selectedService === "Initial/Re-Mastering") return ["master"];
 
     if (selectedService === "Mixing") {
-      if (uploadMode === "basic") {
-        return ["vocals", "instrumental", "reference"];
-      }
+      if (uploadMode === "basic") return ["vocals", "instrumental", "reference"];
       return ["lead-vocals", "bg-vocals", "adlibs", "adv-instrumental", "adv-sfx", "adv-reference"];
     }
 
@@ -157,42 +135,8 @@
   }
 
   function updateContinueButtonState() {
-    // Only gate on required files here (contact fields can be validated in payment step)
+    if (!continueButton) return;
     continueButton.disabled = !requiredFilesSatisfied();
-  }
-
-  function showServiceUI(serviceValue) {
-    selectedService = serviceValue;
-
-    // Show form fields area
-    if (formFields) formFields.style.display = "block";
-
-    // Price display
-    const base = SERVICE_PRICING[selectedService] || 0;
-    if (priceDisplay) {
-      priceDisplay.textContent =
-        selectedService === "Mixing"
-          ? `Selected Service: Mixing (${money(base)})`
-          : `Selected Service: Mastering (${money(base)})`;
-    }
-
-    // Toggle upload sections
-    clearWarnings();
-
-    if (selectedService === "Mixing") {
-      if (mixingUploads) mixingUploads.style.display = "block";
-      if (masteringUploads) masteringUploads.style.display = "none";
-      if (uploadModeToggle) uploadModeToggle.style.display = "flex";
-
-      // Ensure correct mode visible
-      applyUploadModeUI();
-    } else {
-      if (mixingUploads) mixingUploads.style.display = "none";
-      if (masteringUploads) masteringUploads.style.display = "block";
-      if (uploadModeToggle) uploadModeToggle.style.display = "none";
-    }
-
-    updateContinueButtonState();
   }
 
   function applyUploadModeUI() {
@@ -218,6 +162,45 @@
     }
 
     clearWarnings();
+    updateContinueButtonState();
+  }
+
+  function showServiceUI(serviceValue) {
+    selectedService = serviceValue;
+
+    // Show form fields area
+    if (formFields) formFields.style.display = "block";
+
+    // Price display
+    const base = SERVICE_PRICING[selectedService] || 0;
+    if (priceDisplay) {
+      priceDisplay.textContent =
+        selectedService === "Mixing"
+          ? `Selected Service: Mixing (${money(base)})`
+          : `Selected Service: Mastering (${money(base)})`;
+    }
+
+    clearWarnings();
+
+    if (selectedService === "Mixing") {
+      if (mixingUploads) mixingUploads.style.display = "block";
+      if (masteringUploads) masteringUploads.style.display = "none";
+      if (uploadModeToggle) uploadModeToggle.style.display = "flex";
+
+      // Remaster only for mastering
+      if (remasterOption) remasterOption.style.display = "none";
+      if (isRemasterEl) isRemasterEl.checked = false;
+
+      applyUploadModeUI();
+    } else if (selectedService === "Initial/Re-Mastering") {
+      if (mixingUploads) mixingUploads.style.display = "none";
+      if (masteringUploads) masteringUploads.style.display = "block";
+      if (uploadModeToggle) uploadModeToggle.style.display = "none";
+
+      // Show remaster option for mastering
+      if (remasterOption) remasterOption.style.display = "block";
+    }
+
     updateContinueButtonState();
   }
 
@@ -265,12 +248,11 @@
     const current = FILE_CATEGORIES[categoryKey].files.length;
     if (current + incomingCount <= limit) return true;
 
-    // Limit exceeded -> warning
     setGlobalWarning(`File limit exceeded for "${categoryKey}". Max allowed: ${limit}.`);
     return false;
   }
 
-  function addFilesToCategory(categoryKey, fileList, listEl, counterElOptional) {
+  function addFilesToCategory(categoryKey, fileList, listEl) {
     if (!FILE_CATEGORIES[categoryKey]) return;
 
     const files = Array.from(fileList || []);
@@ -278,8 +260,9 @@
 
     clearWarnings();
 
-    // If limit is 1, replace existing
     const limit = FILE_CATEGORIES[categoryKey].limit;
+
+    // Single-file categories replace
     if (limit === 1) {
       FILE_CATEGORIES[categoryKey].files = [files[0]];
       renderFileList(listEl, categoryKey);
@@ -288,20 +271,13 @@
       return;
     }
 
-    // Enforce limit (hard stop)
     if (!enforceLimitOrWarn(categoryKey, files.length)) return;
 
-    // Append
     FILE_CATEGORIES[categoryKey].files.push(...files);
 
     renderFileList(listEl, categoryKey);
     updateCounters();
     updateContinueButtonState();
-
-    // Optional counter update (already handled globally)
-    if (counterElOptional) {
-      // no-op (kept for future extension)
-    }
   }
 
   function bindDropZone(dropZoneId, inputId, listId, categoryKey) {
@@ -311,17 +287,13 @@
 
     if (!dropZone || !input) return;
 
-    // Click -> open file picker
     dropZone.addEventListener("click", () => input.click());
 
-    // Input change -> add files
     input.addEventListener("change", (e) => {
       addFilesToCategory(categoryKey, e.target.files, listEl);
-      // Reset input so selecting the same file again triggers change
       input.value = "";
     });
 
-    // Drag events
     dropZone.addEventListener("dragover", (e) => {
       e.preventDefault();
       dropZone.classList.add("dragover");
@@ -341,8 +313,6 @@
   // ---------- Public functions (called from HTML onclick) ----------
   window.setUploadMode = function (e, mode) {
     if (e && typeof e.preventDefault === "function") e.preventDefault();
-
-    // Only applicable to Mixing
     if (selectedService !== "Mixing") return;
 
     uploadMode = mode === "advanced" ? "advanced" : "basic";
@@ -350,14 +320,12 @@
   };
 
   window.showPaymentSection = function () {
-    // Validate required files first
     clearWarnings();
     if (!requiredFilesSatisfied()) {
       setGlobalWarning("Add the required files before continuing.");
       return;
     }
 
-    // Minimal required contact validation before payment
     const artistName = (document.getElementById("artistName")?.value || "").trim();
     const email = (document.getElementById("email")?.value || "").trim();
     const phone = (document.getElementById("phone")?.value || "").trim();
@@ -368,7 +336,6 @@
       return;
     }
 
-    // Fill order summary
     const base = SERVICE_PRICING[selectedService] || 0;
     const activeFiles = getActiveFilesFlat();
 
@@ -382,33 +349,25 @@
       if (right) right.textContent = money(base);
     }
 
-    // If you later add extra-file pricing, wire it here:
     if (extraFilesLine) extraFilesLine.style.display = "none";
-
     if (summaryTotal) summaryTotal.textContent = money(base);
-
-    // Show payment section
-    const container = document.querySelector(".container");
-    if (container) container.scrollTop = 0;
 
     const uploadForm = document.getElementById("uploadForm");
     if (uploadForm) uploadForm.style.display = "none";
     if (paymentSection) paymentSection.style.display = "block";
 
-    // IMPORTANT:
-    // stripe-integration.js should read the same active files.
-    // Expose getter for it:
+    const isRemaster = !!document.getElementById("isRemaster")?.checked;
+
     window.__getActiveFilesForUpload = () => getActiveFilesFlat().map((x) => x.file);
-    window.__getActiveFilesForManifest = () => {
-      // Provide category + prefixed name idea for backend manifest use if needed
-      return getActiveFilesFlat().map(({ category, file }) => ({
+    window.__getActiveFilesForManifest = () =>
+      getActiveFilesFlat().map(({ category, file }) => ({
         category,
         originalName: file.name,
         suggestedName: `${FILE_CATEGORIES[category].prefix}${file.name}`
       }));
-    };
     window.__getSelectedService = () => selectedService;
     window.__getUploadMode = () => uploadMode;
+    window.__getProjectFlags = () => ({ isRemaster });
   };
 
   window.backToFiles = function () {
@@ -423,25 +382,46 @@
   function initServiceSelection() {
     const masteringRadio = document.getElementById("serviceTypeMastering");
     const mixingRadio = document.getElementById("serviceTypeMixing");
+    const selector = document.querySelector(".service-selector");
 
-    const onChange = () => {
-      const selected =
-        (mixingRadio && mixingRadio.checked && mixingRadio.value) ||
-        (masteringRadio && masteringRadio.checked && masteringRadio.value) ||
-        null;
-
-      if (!selected) return;
+    function selectRadio(radio) {
+      if (!radio) return;
+      radio.checked = true;
 
       // Reset payment section if user goes back and changes service
       if (paymentSection) paymentSection.style.display = "none";
       const uploadForm = document.getElementById("uploadForm");
       if (uploadForm) uploadForm.style.display = "block";
 
-      showServiceUI(selected);
+      // Force UI update
+      showServiceUI(radio.value);
+
+      // Dispatch change for anything else listening
+      radio.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    const onChange = (e) => {
+      const v = e?.target?.value;
+      if (!v) return;
+      showServiceUI(v);
     };
 
     if (masteringRadio) masteringRadio.addEventListener("change", onChange);
     if (mixingRadio) mixingRadio.addEventListener("change", onChange);
+
+    // Delegated click: clicking on the card/label selects the radio reliably
+    if (selector) {
+      selector.addEventListener("click", (e) => {
+        const label = e.target.closest("label.service-option");
+        if (!label) return;
+
+        const radio = label.querySelector('input[type="radio"][name="serviceType"]');
+        if (!radio) return;
+
+        e.preventDefault();
+        selectRadio(radio);
+      });
+    }
   }
 
   function initDropZones() {
@@ -471,11 +451,12 @@
     if (masteringUploads) masteringUploads.style.display = "none";
     if (uploadModeToggle) uploadModeToggle.style.display = "none";
 
-    // Bind
+    // Also hide remaster by default
+    if (remasterOption) remasterOption.style.display = "none";
+
     initServiceSelection();
     initDropZones();
 
-    // Counters
     updateCounters();
     updateContinueButtonState();
   }
