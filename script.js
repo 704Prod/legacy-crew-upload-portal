@@ -142,26 +142,70 @@
     updateContinueButtonState();
   }
 
-  function showServiceUI(serviceValue) {
-    selectedService = serviceValue;
-    console.log("ShowServiceUI called with:", serviceValue);
-     console.log("formFields computed BEFORE:", getComputedStyle(document.getElementById("formFields")).display);
+function showServiceUI(serviceValue) {
+  selectedService = serviceValue;
+  console.log("ShowServiceUI called with:", serviceValue);
 
+  // --- Show fields container ---
+  const formFields = document.getElementById("formFields");
+  console.log(
+    "formFields computed BEFORE:",
+    formFields ? getComputedStyle(formFields).display : "missing"
+  );
 
-    // Show form fields area - CRITICAL
-    const formFields = document.getElementById("formFields");
-    if (formFields) {
-  formFields.style.setProperty("display", "block", "important");
-  console.log("Form fields shown (forced !important)");
-  console.log("formFields computed AFTER:", getComputedStyle(formFields).display);
+  if (formFields) {
+    formFields.style.setProperty("display", "block", "important");
+    console.log("Form fields shown (forced !important)");
+    console.log("formFields computed AFTER:", getComputedStyle(formFields).display);
+  }
+
+  // --- Core section toggles (THIS is what was missing/broken) ---
+  const mixing = document.getElementById("mixingUploads");
+  const mastering = document.getElementById("masteringUploads");
+  const modeToggle = document.getElementById("uploadModeToggle");
+
+  // Hide both first (force)
+  if (mixing) mixing.style.setProperty("display", "none", "important");
+  if (mastering) mastering.style.setProperty("display", "none", "important");
+  if (modeToggle) modeToggle.style.setProperty("display", "none", "important");
+
+  // Service-based show
+  if (serviceValue === "Mixing") {
+    if (mixing) mixing.style.setProperty("display", "block", "important");
+    if (modeToggle) modeToggle.style.setProperty("display", "flex", "important");
+
+    // Ensure correct mode panel is visible
+    if (typeof applyUploadModeUI === "function") applyUploadModeUI();
+  }
+
+  if (serviceValue === "Initial/Re-Mastering") {
+    if (mastering) mastering.style.setProperty("display", "block", "important");
+  }
+
+  console.log("mixingUploads display:", mixing ? getComputedStyle(mixing).display : "missing");
+  console.log("masteringUploads display:", mastering ? getComputedStyle(mastering).display : "missing");
+
+  // Remaster option: show only for mastering
+  const remasterOption = document.getElementById("remasterOption");
+  const isRemaster = document.getElementById("isRemaster");
+  if (remasterOption) {
+    remasterOption.style.setProperty(
+      "display",
+      serviceValue === "Initial/Re-Mastering" ? "block" : "none",
+      "important"
+    );
+  }
+  if (isRemaster && serviceValue !== "Initial/Re-Mastering") isRemaster.checked = false;
+
+  // Continue button gating
+  if (typeof updateContinueButtonState === "function") updateContinueButtonState();
+
+  // Auto-scroll to revealed fields
+  setTimeout(() => {
+    const el = document.getElementById("formFields");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 0);
 }
-
-// Auto-scroll to revealed form fields
-setTimeout(() => {
-  const el = document.getElementById("formFields");
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-}, 0);
-
 
     // Price display
     const priceDisplay = document.getElementById("priceDisplay");
