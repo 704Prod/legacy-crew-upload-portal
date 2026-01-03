@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Legacy Crew - The Core | Music Production Portal</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
   <div class="container">
     <header>
-      <img src="https://i.imgur.com/Wwn9Drg.png" alt="Legacy Crew Logo" class="logo">
+      <img src="https://i.imgur.com/Wwn9Drg.png" alt="Legacy Crew Logo" class="logo" />
       <h1>THE CORE</h1>
       <p class="subtitle">Music Production Portal</p>
     </header>
@@ -21,7 +21,7 @@
         <h2>Select Service</h2>
         <div class="service-selector">
           <label class="service-option">
-            <input type="radio" name="serviceType" value="Initial/Re-Mastering" id="serviceTypeMastering" required>
+            <input type="radio" name="serviceType" value="Initial/Re-Mastering" id="serviceTypeMastering" required />
             <div class="service-card">
               <h3>Mastering</h3>
               <p>Final loudness, balance, and clarity adjustments for existing mixes</p>
@@ -33,8 +33,9 @@
               </div>
             </div>
           </label>
+
           <label class="service-option">
-            <input type="radio" name="serviceType" value="Mixing" id="serviceTypeMixing">
+            <input type="radio" name="serviceType" value="Mixing" id="serviceTypeMixing" />
             <div class="service-card">
               <h3>Mixing</h3>
               <p>Full mix of vocal stems and instrumental with mastering included</p>
@@ -61,22 +62,22 @@
 
           <div class="form-group">
             <label for="artistName">Artist Name *</label>
-            <input type="text" id="artistName" name="artistName" required>
+            <input type="text" id="artistName" name="artistName" required />
           </div>
 
           <div class="form-group">
             <label for="email">Email *</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" required />
           </div>
 
           <div class="form-group">
             <label for="phone">Phone Number *</label>
-            <input type="tel" id="phone" name="phone" required>
+            <input type="tel" id="phone" name="phone" required />
           </div>
 
           <div class="form-group">
             <label for="songTitle">Song Title *</label>
-            <input type="text" id="songTitle" name="songTitle" required>
+            <input type="text" id="songTitle" name="songTitle" required />
           </div>
         </div>
 
@@ -87,12 +88,12 @@
           <div class="form-row">
             <div class="form-group">
               <label for="bpm">BPM (Beats Per Minute)</label>
-              <input type="number" id="bpm" name="bpm" min="1" max="300">
+              <input type="number" id="bpm" name="bpm" min="1" max="300" />
             </div>
 
             <div class="form-group">
               <label for="key">Musical Key</label>
-              <input type="text" id="key" name="key" placeholder="e.g., C Major, A Minor">
+              <input type="text" id="key" name="key" placeholder="e.g., C Major, A Minor" />
             </div>
           </div>
 
@@ -114,10 +115,10 @@
             <span class="mode-hint">Use Advanced mode to organize vocals by type</span>
           </div>
 
-          <!-- MIXING UPLOAD BOXES -->
+          <!-- MIXING UPLOADS -->
           <div id="mixingUploads" style="display: none;">
 
-            <!-- BASIC MODE -->
+            <!-- BASIC MODE (ONLY: vocals, instrumental, reference) -->
             <div id="basicMode" class="upload-mode">
               <!-- Vocal Stems Upload Box -->
               <div class="upload-box required">
@@ -130,7 +131,7 @@
                 <p class="helper-text">Upload all vocal tracks separately (lead, harmonies, ad-libs)</p>
                 <div class="drop-zone" id="vocalDropZone" data-category="vocals">
                   <p class="drop-text">Drop vocal files here or click to browse</p>
-                  <input type="file" id="vocalFiles" multiple accept="audio/*" style="display: none;">
+                  <input type="file" id="vocalFiles" multiple accept="audio/*" style="display: none;" />
                 </div>
                 <div class="file-list" id="vocalFileList"></div>
                 <div id="vocalExtraWarning" class="extra-warning"></div>
@@ -146,45 +147,29 @@
                 <p class="helper-text">Upload the beat/music without vocals</p>
                 <div class="drop-zone" id="instrumentalDropZone" data-category="instrumental">
                   <p class="drop-text">Drop instrumental files here or click to browse</p>
-                  <input type="file" id="instrumentalFiles" multiple accept="audio/*" style="display: none;">
+                  <input type="file" id="instrumentalFiles" multiple accept="audio/*" style="display: none;" />
                 </div>
                 <div class="file-list" id="instrumentalFileList"></div>
               </div>
 
-              <!-- Optional SFX (if you want it wired, these IDs match script.js) -->
-              <div class="upload-box optional">
-                <div class="box-header">
-                  <span class="box-icon">✨</span>
-                  <h3>SFX / Extras</h3>
-                  <span class="optional-badge">Optional</span>
-                </div>
-                <p class="helper-text">Sound effects, risers, drops, additional elements</p>
-                <div class="drop-zone" id="sfxDropZone" data-category="sfx">
-                  <p class="drop-text">Drop SFX files here or click to browse</p>
-                  <input type="file" id="sfxFiles" multiple accept="audio/*" style="display: none;">
-                </div>
-                <div class="file-list" id="sfxFileList"></div>
-              </div>
-
-              <!-- Optional Reference -->
+              <!-- Reference Track (Optional) -->
               <div class="upload-box optional">
                 <div class="box-header">
                   <span class="box-icon">📎</span>
                   <h3>Reference Track</h3>
                   <span class="optional-badge">Optional</span>
                 </div>
-                <p class="helper-text">One reference track max</p>
+                <p class="helper-text">Upload 1 reference track max (for vibe / balance)</p>
                 <div class="drop-zone" id="referenceDropZone" data-category="reference">
                   <p class="drop-text">Drop reference file here or click to browse</p>
-                  <input type="file" id="referenceFiles" accept="audio/*" style="display: none;">
+                  <input type="file" id="referenceFiles" accept="audio/*" style="display: none;" />
                 </div>
                 <div class="file-list" id="referenceFileList"></div>
               </div>
             </div>
 
-            <!-- ADVANCED MODE (this is what your script expects) -->
+            <!-- ADVANCED MODE -->
             <div id="advancedMode" class="upload-mode" style="display: none;">
-
               <!-- Lead Vocals -->
               <div class="upload-box required">
                 <div class="box-header">
@@ -196,7 +181,7 @@
                 <p class="helper-text">Lead vocals only</p>
                 <div class="drop-zone" id="leadDropZone" data-category="lead-vocals">
                   <p class="drop-text">Drop lead vocal files here or click to browse</p>
-                  <input type="file" id="leadFiles" multiple accept="audio/*" style="display: none;">
+                  <input type="file" id="leadFiles" multiple accept="audio/*" style="display: none;" />
                 </div>
                 <div class="file-list" id="leadFileList"></div>
               </div>
@@ -212,12 +197,12 @@
                 <p class="helper-text">Harmonies, stacks, background vocals</p>
                 <div class="drop-zone" id="bgDropZone" data-category="bg-vocals">
                   <p class="drop-text">Drop background vocal files here or click to browse</p>
-                  <input type="file" id="bgFiles" multiple accept="audio/*" style="display: none;">
+                  <input type="file" id="bgFiles" multiple accept="audio/*" style="display: none;" />
                 </div>
                 <div class="file-list" id="bgFileList"></div>
               </div>
 
-              <!-- Adlibs -->
+              <!-- Ad-libs -->
               <div class="upload-box optional">
                 <div class="box-header">
                   <span class="box-icon">🔥</span>
@@ -228,7 +213,7 @@
                 <p class="helper-text">Ad-libs only</p>
                 <div class="drop-zone" id="adlibDropZone" data-category="adlibs">
                   <p class="drop-text">Drop ad-lib files here or click to browse</p>
-                  <input type="file" id="adlibFiles" multiple accept="audio/*" style="display: none;">
+                  <input type="file" id="adlibFiles" multiple accept="audio/*" style="display: none;" />
                 </div>
                 <div class="file-list" id="adlibFileList"></div>
               </div>
@@ -243,45 +228,44 @@
                 <p class="helper-text">Instrumental / beat with no vocals</p>
                 <div class="drop-zone" id="advInstrumentalDropZone" data-category="adv-instrumental">
                   <p class="drop-text">Drop instrumental files here or click to browse</p>
-                  <input type="file" id="advInstrumentalFiles" multiple accept="audio/*" style="display: none;">
+                  <input type="file" id="advInstrumentalFiles" multiple accept="audio/*" style="display: none;" />
                 </div>
                 <div class="file-list" id="advInstrumentalFileList"></div>
               </div>
 
-              <!-- Advanced SFX -->
+              <!-- SFX / Extras (ADVANCED ONLY) -->
               <div class="upload-box optional">
                 <div class="box-header">
                   <span class="box-icon">✨</span>
                   <h3>SFX / Extras</h3>
                   <span class="optional-badge">Optional</span>
                 </div>
-                <p class="helper-text">Sound effects, risers, drops, additional elements</p>
+                <p class="helper-text">Sound effects, risers, drops, extra elements</p>
                 <div class="drop-zone" id="advSfxDropZone" data-category="adv-sfx">
                   <p class="drop-text">Drop SFX files here or click to browse</p>
-                  <input type="file" id="advSfxFiles" multiple accept="audio/*" style="display: none;">
+                  <input type="file" id="advSfxFiles" multiple accept="audio/*" style="display: none;" />
                 </div>
                 <div class="file-list" id="advSfxFileList"></div>
               </div>
 
-              <!-- Advanced Reference -->
+              <!-- Reference Track (ADVANCED) -->
               <div class="upload-box optional">
                 <div class="box-header">
                   <span class="box-icon">📎</span>
                   <h3>Reference Track</h3>
                   <span class="optional-badge">Optional</span>
                 </div>
-                <p class="helper-text">One reference track max</p>
+                <p class="helper-text">Upload 1 reference track max</p>
                 <div class="drop-zone" id="advReferenceDropZone" data-category="adv-reference">
                   <p class="drop-text">Drop reference file here or click to browse</p>
-                  <input type="file" id="advReferenceFiles" accept="audio/*" style="display: none;">
+                  <input type="file" id="advReferenceFiles" accept="audio/*" style="display: none;" />
                 </div>
                 <div class="file-list" id="advReferenceFileList"></div>
               </div>
-
             </div>
           </div>
 
-          <!-- MASTERING UPLOAD BOX -->
+          <!-- MASTERING UPLOAD -->
           <div id="masteringUploads" style="display: none;">
             <div class="upload-box required">
               <div class="box-header">
@@ -292,7 +276,7 @@
               <p class="helper-text">Upload your mixed song for mastering</p>
               <div class="drop-zone" id="masterDropZone" data-category="master">
                 <p class="drop-text">Drop your final mix here or click to browse</p>
-                <input type="file" id="masterFiles" accept="audio/*" style="display: none;">
+                <input type="file" id="masterFiles" accept="audio/*" style="display: none;" />
               </div>
               <div class="file-list" id="masterFileList"></div>
             </div>
@@ -302,7 +286,7 @@
           <div id="globalFileWarning" class="file-warning"></div>
         </div>
 
-        <!-- Review & Continue Button -->
+        <!-- Review & Continue -->
         <button type="button" class="continue-button" id="continueButton" onclick="showPaymentSection()" disabled>
           Review & Continue
         </button>
@@ -329,12 +313,13 @@
 
         <div class="payment-form">
           <h3>Payment Information</h3>
+
           <div id="payment-element"></div>
           <div id="payment-message" class="payment-message"></div>
 
           <div class="terms-acceptance">
             <label>
-              <input type="checkbox" id="termsCheckbox" required>
+              <input type="checkbox" id="termsCheckbox" required />
               I agree to the terms of service and understand all sales are final
             </label>
           </div>
