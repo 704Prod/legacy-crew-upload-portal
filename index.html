@@ -58,7 +58,7 @@
         <div class="form-section">
           <h2>Contact Information</h2>
           <p class="info-text">This information will appear on your receipt</p>
-          
+
           <div class="form-group">
             <label for="artistName">Artist Name *</label>
             <input type="text" id="artistName" name="artistName" required>
@@ -83,7 +83,7 @@
         <!-- Project Details -->
         <div class="form-section">
           <h2>Project Details</h2>
-          
+
           <div class="form-row">
             <div class="form-group">
               <label for="bpm">BPM (Beats Per Minute)</label>
@@ -103,10 +103,10 @@
           </div>
         </div>
 
-        <!-- File Upload Section (keeping your separate boxes structure) -->
+        <!-- File Upload Section -->
         <div class="form-section">
           <h2>Upload Files</h2>
-          
+
           <!-- Upload Mode Toggle (only for mixing) -->
           <div id="uploadModeToggle" class="upload-mode-toggle" style="display: none;">
             <button type="button" class="mode-btn active" onclick="setUploadMode('basic')">Basic</button>
@@ -114,8 +114,10 @@
             <span class="mode-hint">Use Advanced mode to organize vocals by type</span>
           </div>
 
-          <!-- MIXING UPLOAD BOXES (abbreviated for space - keep your full structure) -->
+          <!-- MIXING UPLOAD BOXES -->
           <div id="mixingUploads" style="display: none;">
+
+            <!-- BASIC MODE -->
             <div id="basicMode" class="upload-mode">
               <!-- Vocal Stems Upload Box -->
               <div class="upload-box required">
@@ -151,6 +153,47 @@
 
               <!-- Keep all other upload boxes from previous code -->
             </div>
+
+            <!-- ADVANCED MODE (FIX: this was missing, causing Advanced tab to break) -->
+            <div id="advancedMode" class="upload-mode" style="display: none;">
+              <!-- MVP: mirror Basic so the Advanced tab is functional immediately.
+                   Later, replace these with your advanced-only boxes (Lead / Hooks / Ad-libs / Harmonies, etc.) -->
+
+              <!-- Vocal Stems Upload Box -->
+              <div class="upload-box required">
+                <div class="box-header">
+                  <span class="box-icon">🎤</span>
+                  <h3>Vocal Stems</h3>
+                  <span class="required-badge">Required</span>
+                  <span class="file-counter" id="vocalCounterAdvanced">0/10 files</span>
+                </div>
+                <p class="helper-text">Upload all vocal tracks separately (lead, harmonies, ad-libs)</p>
+                <div class="drop-zone" id="vocalDropZoneAdvanced" data-category="vocals">
+                  <p class="drop-text">Drop vocal files here or click to browse</p>
+                  <input type="file" id="vocalFilesAdvanced" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="vocalFileListAdvanced"></div>
+                <div id="vocalExtraWarningAdvanced" class="extra-warning"></div>
+              </div>
+
+              <!-- Instrumental Upload Box -->
+              <div class="upload-box required">
+                <div class="box-header">
+                  <span class="box-icon">🎵</span>
+                  <h3>Instrumental</h3>
+                  <span class="required-badge">Required</span>
+                </div>
+                <p class="helper-text">Upload the beat/music without vocals</p>
+                <div class="drop-zone" id="instrumentalDropZoneAdvanced" data-category="instrumental">
+                  <p class="drop-text">Drop instrumental files here or click to browse</p>
+                  <input type="file" id="instrumentalFilesAdvanced" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="instrumentalFileListAdvanced"></div>
+              </div>
+
+              <!-- Keep all other advanced upload boxes from previous code -->
+            </div>
+
           </div>
 
           <!-- MASTERING UPLOAD BOX -->
@@ -174,7 +217,7 @@
           <div id="globalFileWarning" class="file-warning"></div>
         </div>
 
-        <!-- Review & Continue Button (replaces direct submit) -->
+        <!-- Review & Continue Button -->
         <button type="button" class="continue-button" id="continueButton" onclick="showPaymentSection()" disabled>
           Review & Continue
         </button>
@@ -185,7 +228,7 @@
     <div id="paymentSection" style="display: none;">
       <div class="payment-container">
         <h2>Order Summary & Payment</h2>
-        
+
         <!-- Order Summary -->
         <div class="order-summary">
           <h3>Order Details</h3>
@@ -224,22 +267,18 @@
         <!-- Payment Form -->
         <div class="payment-form">
           <h3>Payment Information</h3>
-          
-          <!-- Stripe Payment Element will be mounted here -->
+
           <div id="payment-element"></div>
-          
-          <!-- Error messages -->
+
           <div id="payment-message" class="payment-message"></div>
-          
-          <!-- Terms acceptance -->
+
           <div class="terms-acceptance">
             <label>
               <input type="checkbox" id="termsCheckbox" required>
               I agree to the terms of service and understand all sales are final
             </label>
           </div>
-          
-          <!-- Payment buttons -->
+
           <div class="payment-actions">
             <button type="button" class="back-button" onclick="backToFiles()">
               ← Back to Files
@@ -253,7 +292,7 @@
       </div>
     </div>
 
-    <!-- Processing Section - Shows after payment -->
+    <!-- Processing Section -->
     <div id="processingSection" style="display: none;">
       <div class="processing-container">
         <div class="processing-icon">⏳</div>
