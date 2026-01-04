@@ -169,10 +169,10 @@ function showServiceUI(serviceValue) {
   window.selectedService = serviceValue;
   clearWarnings();
 
-  // Show form fields
+  // Show form fields using the 'show' class (required by CSS)
   const formFields = document.getElementById("formFields");
   if (formFields) {
-    formFields.style.display = "block";
+    formFields.classList.add("show");
   }
 
   // Update price display
@@ -211,12 +211,12 @@ function showServiceUI(serviceValue) {
 
   updateContinueButtonState();
 
-  // Scroll to form fields
+  // Scroll to form fields after CSS transition completes
   setTimeout(() => {
     if (formFields) {
       formFields.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, 100);
+  }, 350); // Increased to account for CSS opacity transition (0.3s)
 }
 
 /* =========================
@@ -507,9 +507,9 @@ function initDropZones() {
 function init() {
   console.log("Legacy Crew Portal - Initializing");
   
-  // Hide form fields until service selected
+  // Hide form fields until service selected (remove 'show' class)
   const formFields = document.getElementById("formFields");
-  if (formFields) formFields.style.display = "none";
+  if (formFields) formFields.classList.remove("show");
 
   // Hide all upload sections initially
   const mixingUploads = document.getElementById("mixingUploads");
