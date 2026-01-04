@@ -267,20 +267,19 @@
 
           <!-- MASTERING UPLOAD -->
           <div id="masteringUploads" style="display: none;">
-            <!-- Remaster option (Mastering only) -->
-<div id="remasterOption" class="form-group" style="display: none;">
-  <label class="checkbox-container">
-    <input type="checkbox" id="isRemaster" name="isRemaster" />
-    <span class="checkmark"></span>
-    This is a re-master of a previous master
-  </label>
-</div>
-
             <div class="upload-box required">
               <div class="box-header">
                 <span class="box-icon">🎧</span>
                 <h3>Final Mix</h3>
                 <span class="required-badge">Required</span>
+                <!-- Remaster toggle -->
+                <div id="remasterOption" class="remaster-toggle" style="display: none;">
+                  <span class="toggle-label">Re-master:</span>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="isRemaster" name="isRemaster" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
               </div>
               <p class="helper-text">Upload your mixed song for mastering</p>
               <div class="drop-zone" id="masterDropZone" data-category="master">
