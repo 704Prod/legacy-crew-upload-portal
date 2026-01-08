@@ -10,10 +10,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Link to the optimized CSS -->
+    <!-- Link to optimized external CSS (upload this to your GitHub repo) -->
     <link rel="stylesheet" href="styles-correct.css">
     
     <style>
+        /* Additional styles for header integration */
+        body {
+            background: #090909;
+            margin: 0;
+            padding: 0;
+        }
+        
         /* Header Navigation Styles */
         .legacy-header {
             background: transparent;
@@ -24,6 +31,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            background: #090909;
         }
         
         .nav-logo-button {
@@ -162,6 +170,12 @@
             color: #ff0000;
         }
         
+        /* Main content wrapper */
+        .main-wrapper {
+            padding: 20px;
+            padding-top: 40px;
+        }
+        
         @media (max-width: 768px) {
             .legacy-header {
                 padding: 15px 20px;
@@ -194,20 +208,20 @@
                 font-size: clamp(2em, 8vw, 3em);
                 letter-spacing: 4px;
             }
+            
+            .main-wrapper {
+                padding: 15px;
+                padding-top: 30px;
+            }
         }
         
         body.menu-open {
             overflow: hidden;
         }
-        
-        /* Override logo in form to match header */
-        .logo {
-            filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.3));
-        }
     </style>
 </head>
 <body>
-    <!-- HEADER NAVIGATION -->
+    <!-- INTEGRATED HEADER NAVIGATION -->
     <div class="legacy-header">
         <button class="nav-logo-button" onclick="openNavMenu()" aria-label="Open Navigation">
             <img src="https://images.squarespace-cdn.com/content/v1/691aa8e868041070aacd9d84/a4f3b6fc-5b50-4d08-872a-bdca799d11c0/SQUARE+RENDER.png?format=300w" 
@@ -223,172 +237,175 @@
         
         <div class="nav-menu" onclick="event.stopPropagation()">
             <div class="nav-menu-item">
-                <a href="/">HOME</a>
+                <a href="https://thelegacycrew.com">HOME</a>
             </div>
             
             <div class="nav-menu-item">
-                <a href="/roster">ROSTER</a>
+                <a href="https://thelegacycrew.com/roster">ROSTER</a>
             </div>
             
             <div class="nav-menu-item">
-                <a href="/services">SERVICES</a>
+                <a href="https://thelegacycrew.com/services">SERVICES</a>
             </div>
         </div>
     </div>
     
-    <!-- MAIN UPLOAD PORTAL -->
-    <div class="container">
-        <header>
-            <img src="https://images.squarespace-cdn.com/content/v1/691aa8e868041070aacd9d84/a4f3b6fc-5b50-4d08-872a-bdca799d11c0/SQUARE+RENDER.png?format=300w" 
-                 alt="Legacy Crew Logo" 
-                 class="logo">
-            <h1>THE CORE</h1>
-            <p class="subtitle">Client Upload Portal</p>
-        </header>
-        
-        <form id="uploadForm">
-            <!-- Service Selection -->
-            <div class="form-section">
-                <h2>Select Service</h2>
-                <p class="info-text">Choose your service below. Mixing includes mastering.</p>
-                <div class="service-selector">
-                    <label class="service-option">
-                        <input type="radio" name="service" value="mixing" checked>
-                        <div class="service-card">
-                            <h3>MIXING</h3>
-                            <p>Professional mixing with mastering included</p>
-                            <p style="color: #ff0000; font-weight: bold; margin-top: 10px; font-size: 1.2em;">$30</p>
+    <!-- MAIN UPLOAD PORTAL CONTENT -->
+    <div class="main-wrapper">
+        <div class="container">
+            <header>
+                <img src="https://images.squarespace-cdn.com/content/v1/691aa8e868041070aacd9d84/a4f3b6fc-5b50-4d08-872a-bdca799d11c0/SQUARE+RENDER.png?format=300w" 
+                     alt="Legacy Crew Logo" 
+                     class="logo">
+                <h1>THE CORE</h1>
+                <p class="subtitle">Client Upload Portal</p>
+            </header>
+            
+            <form id="uploadForm">
+                <!-- Service Selection -->
+                <div class="form-section">
+                    <h2>Select Service</h2>
+                    <p class="info-text">Choose your service below. Mixing includes mastering.</p>
+                    <div class="service-selector">
+                        <label class="service-option">
+                            <input type="radio" name="service" value="mixing" checked>
+                            <div class="service-card">
+                                <h3>MIXING</h3>
+                                <p>Professional mixing with mastering included</p>
+                                <p style="color: #ff0000; font-weight: bold; margin-top: 10px; font-size: 1.2em;">$30</p>
+                            </div>
+                        </label>
+                        
+                        <label class="service-option">
+                            <input type="radio" name="service" value="mastering">
+                            <div class="service-card">
+                                <h3>MASTERING</h3>
+                                <p>Industry-standard mastering for your tracks</p>
+                                <p style="color: #ff0000; font-weight: bold; margin-top: 10px; font-size: 1.2em;">$15</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="form-section">
+                    <h2>Contact Information</h2>
+                    <div class="form-group">
+                        <label for="clientName">Your Name</label>
+                        <input type="text" id="clientName" name="clientName" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
                         </div>
-                    </label>
-                    
-                    <label class="service-option">
-                        <input type="radio" name="service" value="mastering">
-                        <div class="service-card">
-                            <h3>MASTERING</h3>
-                            <p>Industry-standard mastering for your tracks</p>
-                            <p style="color: #ff0000; font-weight: bold; margin-top: 10px; font-size: 1.2em;">$15</p>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
                         </div>
-                    </label>
-                </div>
-            </div>
-            
-            <!-- Contact Information -->
-            <div class="form-section">
-                <h2>Contact Information</h2>
-                <div class="form-group">
-                    <label for="clientName">Your Name</label>
-                    <input type="text" id="clientName" name="clientName" required>
+                    </div>
                 </div>
                 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" required>
+                <!-- Project Details -->
+                <div class="form-section">
+                    <h2>Project Details</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="artistName">Artist Name</label>
+                            <input type="text" id="artistName" name="artistName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="songTitle">Song Title</label>
+                            <input type="text" id="songTitle" name="songTitle" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bpm">BPM (Optional)</label>
+                            <input type="number" id="bpm" name="bpm" min="60" max="200">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="key">Key (Optional)</label>
+                            <input type="text" id="key" name="key" placeholder="e.g., C Major">
+                        </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" name="notes" placeholder="Any specific requirements or preferences..."></textarea>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Project Details -->
-            <div class="form-section">
-                <h2>Project Details</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="artistName">Artist Name</label>
-                        <input type="text" id="artistName" name="artistName" required>
+                
+                <!-- File Upload Section for Mixing -->
+                <div class="form-section" id="mixingSection" style="display: block;">
+                    <h2>Upload Files</h2>
+                    <p class="help-text">For <strong>mixing</strong>: Upload individual stems (vocals, drums, bass, etc.) as WAV or high-quality MP3 files.</p>
+                    
+                    <div class="file-upload-section" id="dropZone">
+                        <p style="font-size: 1.2em; margin-bottom: 10px;">📁 Drag & Drop Files Here</p>
+                        <p style="color: #999; margin-bottom: 20px;">or click to browse</p>
+                        <label for="fileInput" class="upload-button">
+                            Choose Files
+                        </label>
+                        <input type="file" id="fileInput" multiple accept=".wav,.mp3,.flac,.aiff" hidden>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="songTitle">Song Title</label>
-                        <input type="text" id="songTitle" name="songTitle" required>
-                    </div>
+                    <div class="file-list" id="fileList"></div>
                 </div>
                 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="bpm">BPM (Optional)</label>
-                        <input type="number" id="bpm" name="bpm" min="60" max="200">
+                <!-- File Upload Section for Mastering -->
+                <div class="form-section" id="masteringSection" style="display: none;">
+                    <h2>Upload File</h2>
+                    <p class="help-text">For <strong>mastering</strong>: Upload your final stereo mix as a WAV file (24-bit/48kHz or higher preferred).</p>
+                    
+                    <div class="file-upload-section" id="masterDropZone">
+                        <p style="font-size: 1.2em; margin-bottom: 10px;">📁 Drag & Drop File Here</p>
+                        <p style="color: #999; margin-bottom: 20px;">or click to browse</p>
+                        <label for="masterFileInput" class="upload-button">
+                            Choose File
+                        </label>
+                        <input type="file" id="masterFileInput" accept=".wav,.mp3,.flac,.aiff" hidden>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="key">Key (Optional)</label>
-                        <input type="text" id="key" name="key" placeholder="e.g., C Major">
-                    </div>
+                    <div class="file-list" id="masterFileList"></div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="notes">Additional Notes</label>
-                    <textarea id="notes" name="notes" placeholder="Any specific requirements or preferences..."></textarea>
+                <!-- Submit Button -->
+                <button type="submit" class="submit-button" id="submitBtn">
+                    Submit Order - Pay Now
+                </button>
+            </form>
+            
+            <!-- Progress Section -->
+            <div id="progressSection">
+                <div class="progress-container">
+                    <div class="overall-progress">
+                        <div class="progress-label">
+                            <span>Uploading Files...</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="overallProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div id="fileProgressList"></div>
                 </div>
             </div>
             
-            <!-- File Upload Section -->
-            <div class="form-section" id="mixingSection" style="display: block;">
-                <h2>Upload Files</h2>
-                <p class="help-text">For <strong>mixing</strong>: Upload individual stems (vocals, drums, bass, etc.) as WAV or high-quality MP3 files.</p>
-                
-                <div class="file-upload-section" id="dropZone">
-                    <p style="font-size: 1.2em; margin-bottom: 10px;">📁 Drag & Drop Files Here</p>
-                    <p style="color: #999; margin-bottom: 20px;">or click to browse</p>
-                    <label for="fileInput" class="upload-button">
-                        Choose Files
-                    </label>
-                    <input type="file" id="fileInput" multiple accept=".wav,.mp3,.flac,.aiff" hidden>
-                </div>
-                
-                <div class="file-list" id="fileList"></div>
+            <!-- Success Message -->
+            <div id="successMessage">
+                ✅ Order submitted successfully! Redirecting to payment...
             </div>
             
-            <div class="form-section" id="masteringSection" style="display: none;">
-                <h2>Upload File</h2>
-                <p class="help-text">For <strong>mastering</strong>: Upload your final stereo mix as a WAV file (24-bit/48kHz or higher preferred).</p>
-                
-                <div class="file-upload-section" id="masterDropZone">
-                    <p style="font-size: 1.2em; margin-bottom: 10px;">📁 Drag & Drop File Here</p>
-                    <p style="color: #999; margin-bottom: 20px;">or click to browse</p>
-                    <label for="masterFileInput" class="upload-button">
-                        Choose File
-                    </label>
-                    <input type="file" id="masterFileInput" accept=".wav,.mp3,.flac,.aiff" hidden>
-                </div>
-                
-                <div class="file-list" id="masterFileList"></div>
+            <!-- Error Message -->
+            <div id="errorMessage">
+                ❌ An error occurred. Please try again.
             </div>
-            
-            <!-- Submit Button -->
-            <button type="submit" class="submit-button" id="submitBtn">
-                Submit Order - Pay Now
-            </button>
-        </form>
-        
-        <!-- Progress Section -->
-        <div id="progressSection">
-            <div class="progress-container">
-                <div class="overall-progress">
-                    <div class="progress-label">
-                        <span>Uploading Files...</span>
-                        <span id="progressPercent">0%</span>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="overallProgress" style="width: 0%"></div>
-                    </div>
-                </div>
-                <div id="fileProgressList"></div>
-            </div>
-        </div>
-        
-        <!-- Success Message -->
-        <div id="successMessage">
-            ✅ Order submitted successfully! Redirecting to payment...
-        </div>
-        
-        <!-- Error Message -->
-        <div id="errorMessage">
-            ❌ An error occurred. Please try again.
         </div>
     </div>
     
@@ -446,17 +463,17 @@
         let selectedFiles = [];
         let masterFile = null;
         
-        // Mixing File Upload
+        // Mixing File Upload Elements
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
         const fileList = document.getElementById('fileList');
         
-        // Master File Upload
+        // Master File Upload Elements
         const masterDropZone = document.getElementById('masterDropZone');
         const masterFileInput = document.getElementById('masterFileInput');
         const masterFileList = document.getElementById('masterFileList');
         
-        // Drag and Drop Events - Mixing
+        // Drag and Drop Events
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, preventDefaults, false);
             masterDropZone.addEventListener(eventName, preventDefaults, false);
