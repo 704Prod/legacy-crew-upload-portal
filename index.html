@@ -1,648 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legacy Crew - The Core Upload Portal</title>
-    
-    <!-- Import fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Link to optimized external CSS (upload this to your GitHub repo) -->
-    <link rel="stylesheet" href="styles-correct.css">
-    
-    <style>
-        /* Additional styles for header integration */
-        body {
-            background: #090909;
-            margin: 0;
-            padding: 0;
-        }
-        
-        /* Header Navigation Styles */
-        .legacy-header {
-            background: transparent;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: #090909;
-        }
-        
-        .nav-logo-button {
-            position: relative;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            padding: 0;
-            will-change: transform;
-        }
-        
-        .nav-logo-button:hover {
-            transform: scale(1.05);
-        }
-        
-        .nav-logo-button .legacy-logo {
-            height: 80px;
-            width: 80px;
-            object-fit: contain;
-            display: block;
-            filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.3));
-        }
-        
-        .nav-text {
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-        
-        .nav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(9, 9, 9, 0.98);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            will-change: opacity;
-        }
-        
-        .nav-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .nav-close {
-            position: absolute;
-            top: 40px;
-            right: 40px;
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: #fff;
-            width: 50px;
-            height: 50px;
-            font-size: 28px;
-            cursor: pointer;
-            transition: border-color 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .nav-close:hover {
-            border-color: #ff0000;
-        }
-        
-        .nav-menu {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-        
-        .nav-menu-item {
-            display: block;
-            margin: 40px 0;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: none;
-        }
-        
-        .nav-overlay.active .nav-menu-item {
-            animation: slideInMenu 0.2s ease forwards;
-        }
-        
-        .nav-overlay.active .nav-menu-item:nth-child(1) {
-            animation-delay: 0.05s;
-        }
-        
-        .nav-overlay.active .nav-menu-item:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-        
-        .nav-overlay.active .nav-menu-item:nth-child(3) {
-            animation-delay: 0.15s;
-        }
-        
-        @keyframes slideInMenu {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .nav-menu-item a {
-            color: #fff;
-            text-decoration: none;
-            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: clamp(2.5em, 5vw, 4em);
-            font-weight: 900;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            display: inline-block;
-            position: relative;
-            transition: color 0.2s ease;
-            padding: 10px 0;
-            will-change: color;
-        }
-        
-        .nav-menu-item a:hover {
-            color: #ff0000;
-        }
-        
-        /* Main content wrapper */
-        .main-wrapper {
-            padding: 20px;
-            padding-top: 40px;
-        }
-        
-        @media (max-width: 768px) {
-            .legacy-header {
-                padding: 15px 20px;
-            }
-            
-            .nav-logo-button .legacy-logo {
-                height: 60px;
-                width: 60px;
-            }
-            
-            .nav-text {
-                font-size: 9px;
-                letter-spacing: 2px;
-                bottom: -20px;
-            }
-            
-            .nav-close {
-                top: 20px;
-                right: 20px;
-                width: 40px;
-                height: 40px;
-                font-size: 24px;
-            }
-            
-            .nav-menu-item {
-                margin: 30px 0;
-            }
-            
-            .nav-menu-item a {
-                font-size: clamp(2em, 8vw, 3em);
-                letter-spacing: 4px;
-            }
-            
-            .main-wrapper {
-                padding: 15px;
-                padding-top: 30px;
-            }
-        }
-        
-        body.menu-open {
-            overflow: hidden;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legacy Crew - The Core | Music Production Portal</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-    <!-- INTEGRATED HEADER NAVIGATION -->
-    <div class="legacy-header">
-        <button class="nav-logo-button" onclick="openNavMenu()" aria-label="Open Navigation">
-            <img src="https://images.squarespace-cdn.com/content/v1/691aa8e868041070aacd9d84/a4f3b6fc-5b50-4d08-872a-bdca799d11c0/SQUARE+RENDER.png?format=300w" 
-                 alt="Legacy Crew" 
-                 class="legacy-logo">
-            <span class="nav-text">Navigation</span>
+  <div class="container">
+    <header>
+      <img src="https://i.imgur.com/Wwn9Drg.png" alt="Legacy Crew Logo" class="logo">
+      <h1>THE CORE</h1>
+      <p class="subtitle">Music Production Portal</p>
+    </header>
+
+    <form id="uploadForm" class="upload-form">
+      <!-- Service Selection -->
+      <div class="form-section">
+        <h2>Select Service</h2>
+        <div class="service-selector">
+          <label class="service-option">
+            <input type="radio" name="serviceType" value="Initial/Re-Mastering" id="serviceTypeMastering" required>
+            <div class="service-card">
+              <h3>Mastering</h3>
+              <p>Final loudness, balance, and clarity adjustments for existing mixes</p>
+              <div class="service-price">$15</div>
+              <div class="service-features">
+                <span>Professional polish</span>
+                <span>Light corrective work</span>
+                <span>Platform optimization</span>
+              </div>
+            </div>
+          </label>
+          <label class="service-option">
+            <input type="radio" name="serviceType" value="Mixing" id="serviceTypeMixing">
+            <div class="service-card">
+              <h3>Mixing</h3>
+              <p>Full mix of vocal stems and instrumental with mastering included</p>
+              <div class="service-price">$30</div>
+              <div class="service-features">
+                <span>Professional mixing</span>
+                <span>Mastering included</span>
+                <span>Reference matching</span>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Form Fields - Hidden until service selected -->
+      <div id="formFields">
+        <!-- Price Display -->
+        <div id="priceDisplay" class="price-display"></div>
+
+        <!-- Contact Information -->
+        <div class="form-section">
+          <h2>Contact Information</h2>
+          <p class="info-text">This information will appear on your receipt</p>
+          
+          <div class="form-group">
+            <label for="artistName">Artist Name *</label>
+            <input type="text" id="artistName" name="artistName" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+
+          <div class="form-group">
+            <label for="songTitle">Song Title *</label>
+            <input type="text" id="songTitle" name="songTitle" required>
+          </div>
+        </div>
+
+        <!-- Project Details -->
+        <div class="form-section">
+          <h2>Project Details</h2>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bpm">BPM (Beats Per Minute)</label>
+              <input type="number" id="bpm" name="bpm" min="1" max="300">
+            </div>
+
+            <div class="form-group">
+              <label for="key">Musical Key</label>
+              <input type="text" id="key" name="key" placeholder="e.g., C Major, A Minor">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Additional Notes</label>
+            <p class="help-text">Tell us about your vision, reference tracks, or specific requirements</p>
+            <textarea id="notes" name="notes" rows="4"></textarea>
+          </div>
+        </div>
+
+        <!-- File Upload Section (keeping your separate boxes structure) -->
+        <div class="form-section">
+          <h2>Upload Files</h2>
+          
+          <!-- Upload Mode Toggle (only for mixing) -->
+          <div id="uploadModeToggle" class="upload-mode-toggle" style="display: none;">
+            <button type="button" class="mode-btn active" onclick="setUploadMode('basic')">Basic</button>
+            <button type="button" class="mode-btn" onclick="setUploadMode('advanced')">Advanced</button>
+            <span class="mode-hint">Use Advanced mode to organize vocals by type</span>
+          </div>
+
+          <!-- MIXING UPLOAD BOXES (abbreviated for space - keep your full structure) -->
+          <div id="mixingUploads" style="display: none;">
+            <div id="basicMode" class="upload-mode">
+              <!-- Vocal Stems Upload Box -->
+              <div class="upload-box required">
+                <div class="box-header">
+                  <span class="box-icon">🎤</span>
+                  <h3>Vocal Stems</h3>
+                  <span class="required-badge">Required</span>
+                  <span class="file-counter" id="vocalCounter">0/10 files</span>
+                </div>
+                <p class="helper-text">Upload all vocal tracks separately (lead, harmonies, ad-libs)</p>
+                <div class="drop-zone" id="vocalDropZone" data-category="vocals">
+                  <p class="drop-text">Drop vocal files here or click to browse</p>
+                  <input type="file" id="vocalFiles" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="vocalFileList"></div>
+                <div id="vocalExtraWarning" class="extra-warning"></div>
+              </div>
+
+              <!-- Instrumental Upload Box -->
+              <div class="upload-box required">
+                <div class="box-header">
+                  <span class="box-icon">🎵</span>
+                  <h3>Instrumental</h3>
+                  <span class="required-badge">Required</span>
+                </div>
+                <p class="helper-text">Upload the beat/music without vocals</p>
+                <div class="drop-zone" id="instrumentalDropZone" data-category="instrumental">
+                  <p class="drop-text">Drop instrumental files here or click to browse</p>
+                  <input type="file" id="instrumentalFiles" multiple accept="audio/*" style="display: none;">
+                </div>
+                <div class="file-list" id="instrumentalFileList"></div>
+              </div>
+
+              <!-- Keep all other upload boxes from previous code -->
+            </div>
+          </div>
+
+          <!-- MASTERING UPLOAD BOX -->
+          <div id="masteringUploads" style="display: none;">
+            <div class="upload-box required">
+              <div class="box-header">
+                <span class="box-icon">🎧</span>
+                <h3>Final Mix</h3>
+                <span class="required-badge">Required</span>
+              </div>
+              <p class="helper-text">Upload your mixed song for mastering</p>
+              <div class="drop-zone" id="masterDropZone" data-category="master">
+                <p class="drop-text">Drop your final mix here or click to browse</p>
+                <input type="file" id="masterFiles" accept="audio/*" style="display: none;">
+              </div>
+              <div class="file-list" id="masterFileList"></div>
+            </div>
+          </div>
+
+          <!-- Global file warning -->
+          <div id="globalFileWarning" class="file-warning"></div>
+        </div>
+
+        <!-- Review & Continue Button (replaces direct submit) -->
+        <button type="button" class="continue-button" id="continueButton" onclick="showPaymentSection()" disabled>
+          Review & Continue
         </button>
-    </div>
-    
-    <!-- Fullscreen Navigation Overlay -->
-    <div class="nav-overlay" id="navOverlay" onclick="closeNavMenu(event)">
-        <button class="nav-close" onclick="closeNavMenu(event)">✕</button>
+      </div>
+    </form>
+
+    <!-- PAYMENT SECTION - Hidden until files are ready -->
+    <div id="paymentSection" style="display: none;">
+      <div class="payment-container">
+        <h2>Order Summary & Payment</h2>
         
-        <div class="nav-menu" onclick="event.stopPropagation()">
-            <div class="nav-menu-item">
-                <a href="https://thelegacycrew.com">HOME</a>
-            </div>
-            
-            <div class="nav-menu-item">
-                <a href="https://thelegacycrew.com/roster">ROSTER</a>
-            </div>
-            
-            <div class="nav-menu-item">
-                <a href="https://thelegacycrew.com/services">SERVICES</a>
-            </div>
+        <!-- Order Summary -->
+        <div class="order-summary">
+          <h3>Order Details</h3>
+          <div class="summary-line">
+            <span>Service:</span>
+            <span id="summaryService">-</span>
+          </div>
+          <div class="summary-line">
+            <span>Song Title:</span>
+            <span id="summarySong">-</span>
+          </div>
+          <div class="summary-line">
+            <span>Artist:</span>
+            <span id="summaryArtist">-</span>
+          </div>
+          <div class="summary-line">
+            <span>Files:</span>
+            <span id="summaryFiles">-</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-line" id="basePrice">
+            <span>Base Service:</span>
+            <span>$0.00</span>
+          </div>
+          <div class="summary-line" id="extraFilesLine" style="display: none;">
+            <span>Extra Files:</span>
+            <span>$0.00</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-total">
+            <span>Total:</span>
+            <span id="summaryTotal">$0.00</span>
+          </div>
         </div>
-    </div>
-    
-    <!-- MAIN UPLOAD PORTAL CONTENT -->
-    <div class="main-wrapper">
-        <div class="container">
-            <header>
-                <img src="https://images.squarespace-cdn.com/content/v1/691aa8e868041070aacd9d84/a4f3b6fc-5b50-4d08-872a-bdca799d11c0/SQUARE+RENDER.png?format=300w" 
-                     alt="Legacy Crew Logo" 
-                     class="logo">
-                <h1>THE CORE</h1>
-                <p class="subtitle">Client Upload Portal</p>
-            </header>
-            
-            <form id="uploadForm">
-                <!-- Service Selection -->
-                <div class="form-section">
-                    <h2>Select Service</h2>
-                    <p class="info-text">Choose your service below. Mixing includes mastering.</p>
-                    <div class="service-selector">
-                        <label class="service-option">
-                            <input type="radio" name="service" value="mixing" checked>
-                            <div class="service-card">
-                                <h3>MIXING</h3>
-                                <p>Professional mixing with mastering included</p>
-                                <p style="color: #ff0000; font-weight: bold; margin-top: 10px; font-size: 1.2em;">$30</p>
-                            </div>
-                        </label>
-                        
-                        <label class="service-option">
-                            <input type="radio" name="service" value="mastering">
-                            <div class="service-card">
-                                <h3>MASTERING</h3>
-                                <p>Industry-standard mastering for your tracks</p>
-                                <p style="color: #ff0000; font-weight: bold; margin-top: 10px; font-size: 1.2em;">$15</p>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-                
-                <!-- Contact Information -->
-                <div class="form-section">
-                    <h2>Contact Information</h2>
-                    <div class="form-group">
-                        <label for="clientName">Your Name</label>
-                        <input type="text" id="clientName" name="clientName" required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Project Details -->
-                <div class="form-section">
-                    <h2>Project Details</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="artistName">Artist Name</label>
-                            <input type="text" id="artistName" name="artistName" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="songTitle">Song Title</label>
-                            <input type="text" id="songTitle" name="songTitle" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="bpm">BPM (Optional)</label>
-                            <input type="number" id="bpm" name="bpm" min="60" max="200">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="key">Key (Optional)</label>
-                            <input type="text" id="key" name="key" placeholder="e.g., C Major">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="notes">Additional Notes</label>
-                        <textarea id="notes" name="notes" placeholder="Any specific requirements or preferences..."></textarea>
-                    </div>
-                </div>
-                
-                <!-- File Upload Section for Mixing -->
-                <div class="form-section" id="mixingSection" style="display: block;">
-                    <h2>Upload Files</h2>
-                    <p class="help-text">For <strong>mixing</strong>: Upload individual stems (vocals, drums, bass, etc.) as WAV or high-quality MP3 files.</p>
-                    
-                    <div class="file-upload-section" id="dropZone">
-                        <p style="font-size: 1.2em; margin-bottom: 10px;">📁 Drag & Drop Files Here</p>
-                        <p style="color: #999; margin-bottom: 20px;">or click to browse</p>
-                        <label for="fileInput" class="upload-button">
-                            Choose Files
-                        </label>
-                        <input type="file" id="fileInput" multiple accept=".wav,.mp3,.flac,.aiff" hidden>
-                    </div>
-                    
-                    <div class="file-list" id="fileList"></div>
-                </div>
-                
-                <!-- File Upload Section for Mastering -->
-                <div class="form-section" id="masteringSection" style="display: none;">
-                    <h2>Upload File</h2>
-                    <p class="help-text">For <strong>mastering</strong>: Upload your final stereo mix as a WAV file (24-bit/48kHz or higher preferred).</p>
-                    
-                    <div class="file-upload-section" id="masterDropZone">
-                        <p style="font-size: 1.2em; margin-bottom: 10px;">📁 Drag & Drop File Here</p>
-                        <p style="color: #999; margin-bottom: 20px;">or click to browse</p>
-                        <label for="masterFileInput" class="upload-button">
-                            Choose File
-                        </label>
-                        <input type="file" id="masterFileInput" accept=".wav,.mp3,.flac,.aiff" hidden>
-                    </div>
-                    
-                    <div class="file-list" id="masterFileList"></div>
-                </div>
-                
-                <!-- Submit Button -->
-                <button type="submit" class="submit-button" id="submitBtn">
-                    Submit Order - Pay Now
-                </button>
-            </form>
-            
-            <!-- Progress Section -->
-            <div id="progressSection">
-                <div class="progress-container">
-                    <div class="overall-progress">
-                        <div class="progress-label">
-                            <span>Uploading Files...</span>
-                            <span id="progressPercent">0%</span>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" id="overallProgress" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    <div id="fileProgressList"></div>
-                </div>
-            </div>
-            
-            <!-- Success Message -->
-            <div id="successMessage">
-                ✅ Order submitted successfully! Redirecting to payment...
-            </div>
-            
-            <!-- Error Message -->
-            <div id="errorMessage">
-                ❌ An error occurred. Please try again.
-            </div>
+
+        <!-- Payment Form -->
+        <div class="payment-form">
+          <h3>Payment Information</h3>
+          
+          <!-- Stripe Payment Element will be mounted here -->
+          <div id="payment-element"></div>
+          
+          <!-- Error messages -->
+          <div id="payment-message" class="payment-message"></div>
+          
+          <!-- Terms acceptance -->
+          <div class="terms-acceptance">
+            <label>
+              <input type="checkbox" id="termsCheckbox" required>
+              I agree to the terms of service and understand all sales are final
+            </label>
+          </div>
+          
+          <!-- Payment buttons -->
+          <div class="payment-actions">
+            <button type="button" class="back-button" onclick="backToFiles()">
+              ← Back to Files
+            </button>
+            <button type="button" id="submitPaymentButton" class="submit-payment-button" disabled>
+              <span id="button-text">Pay Now</span>
+              <span id="spinner" class="spinner" style="display: none;"></span>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-    
-    <!-- JavaScript -->
-    <script>
-        // Navigation Functions
-        function openNavMenu() {
-            const overlay = document.getElementById('navOverlay');
-            overlay.classList.add('active');
-            document.body.classList.add('menu-open');
-        }
-        
-        function closeNavMenu(event) {
-            if (event && event.target.tagName === 'A') {
-                return;
-            }
-            
-            if (event && event.target.closest('.nav-menu') && !event.target.closest('.nav-close')) {
-                return;
-            }
-            
-            const overlay = document.getElementById('navOverlay');
-            overlay.classList.remove('active');
-            document.body.classList.remove('menu-open');
-        }
-        
-        // Close menu with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                const overlay = document.getElementById('navOverlay');
-                if (overlay.classList.contains('active')) {
-                    closeNavMenu(event);
-                }
-            }
-        });
-        
-        // Service Selection Toggle
-        const serviceRadios = document.querySelectorAll('input[name="service"]');
-        const mixingSection = document.getElementById('mixingSection');
-        const masteringSection = document.getElementById('masteringSection');
-        
-        serviceRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.value === 'mixing') {
-                    mixingSection.style.display = 'block';
-                    masteringSection.style.display = 'none';
-                } else {
-                    mixingSection.style.display = 'none';
-                    masteringSection.style.display = 'block';
-                }
-            });
-        });
-        
-        // File Upload Variables
-        let selectedFiles = [];
-        let masterFile = null;
-        
-        // Mixing File Upload Elements
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
-        
-        // Master File Upload Elements
-        const masterDropZone = document.getElementById('masterDropZone');
-        const masterFileInput = document.getElementById('masterFileInput');
-        const masterFileList = document.getElementById('masterFileList');
-        
-        // Drag and Drop Events
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
-            masterDropZone.addEventListener(eventName, preventDefaults, false);
-        });
-        
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
-            masterDropZone.addEventListener(eventName, () => masterDropZone.classList.add('drag-over'), false);
-        });
-        
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
-            masterDropZone.addEventListener(eventName, () => masterDropZone.classList.remove('drag-over'), false);
-        });
-        
-        // Handle file drops
-        dropZone.addEventListener('drop', handleDrop, false);
-        masterDropZone.addEventListener('drop', handleMasterDrop, false);
-        
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles([...files]);
-        }
-        
-        function handleMasterDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            if (files.length > 0) {
-                handleMasterFile(files[0]);
-            }
-        }
-        
-        // File input change events
-        fileInput.addEventListener('change', function() {
-            handleFiles([...this.files]);
-        });
-        
-        masterFileInput.addEventListener('change', function() {
-            if (this.files.length > 0) {
-                handleMasterFile(this.files[0]);
-            }
-        });
-        
-        // Click to open file browser
-        dropZone.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('remove-file')) {
-                fileInput.click();
-            }
-        });
-        
-        masterDropZone.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('remove-file')) {
-                masterFileInput.click();
-            }
-        });
-        
-        // Handle files for mixing
-        function handleFiles(files) {
-            files.forEach(file => {
-                if (!selectedFiles.find(f => f.name === file.name)) {
-                    selectedFiles.push(file);
-                }
-            });
-            updateFileList();
-        }
-        
-        // Handle file for mastering
-        function handleMasterFile(file) {
-            masterFile = file;
-            updateMasterFileList();
-        }
-        
-        // Update file list display for mixing
-        function updateFileList() {
-            fileList.innerHTML = '';
-            selectedFiles.forEach((file, index) => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-                fileItem.innerHTML = `
-                    <span class="file-name">${file.name}</span>
-                    <span class="file-size">${formatFileSize(file.size)}</span>
-                    <button type="button" class="remove-file" onclick="removeFile(${index})">Remove</button>
-                `;
-                fileList.appendChild(fileItem);
-            });
-        }
-        
-        // Update file display for mastering
-        function updateMasterFileList() {
-            masterFileList.innerHTML = '';
-            if (masterFile) {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-                fileItem.innerHTML = `
-                    <span class="file-name">${masterFile.name}</span>
-                    <span class="file-size">${formatFileSize(masterFile.size)}</span>
-                    <button type="button" class="remove-file" onclick="removeMasterFile()">Remove</button>
-                `;
-                masterFileList.appendChild(fileItem);
-            }
-        }
-        
-        // Remove file functions
-        function removeFile(index) {
-            selectedFiles.splice(index, 1);
-            updateFileList();
-        }
-        
-        function removeMasterFile() {
-            masterFile = null;
-            updateMasterFileList();
-        }
-        
-        // Format file size
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
-        }
-        
-        // Form submission
-        document.getElementById('uploadForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Check if files are selected
-            const service = document.querySelector('input[name="service"]:checked').value;
-            if (service === 'mixing' && selectedFiles.length === 0) {
-                alert('Please upload at least one file for mixing.');
-                return;
-            }
-            if (service === 'mastering' && !masterFile) {
-                alert('Please upload a file for mastering.');
-                return;
-            }
-            
-            // Show progress
-            document.getElementById('uploadForm').style.display = 'none';
-            document.getElementById('progressSection').style.display = 'block';
-            
-            // Simulate upload progress
-            let progress = 0;
-            const progressInterval = setInterval(() => {
-                progress += 5;
-                document.getElementById('overallProgress').style.width = progress + '%';
-                document.getElementById('progressPercent').textContent = progress + '%';
-                
-                if (progress >= 100) {
-                    clearInterval(progressInterval);
-                    setTimeout(() => {
-                        document.getElementById('progressSection').style.display = 'none';
-                        document.getElementById('successMessage').style.display = 'block';
-                        
-                        // Redirect to payment after 2 seconds
-                        setTimeout(() => {
-                            alert('Redirecting to payment gateway...');
-                            // window.location.href = 'payment-url';
-                        }, 2000);
-                    }, 500);
-                }
-            }, 100);
-        });
-    </script>
+
+    <!-- Processing Section - Shows after payment -->
+    <div id="processingSection" style="display: none;">
+      <div class="processing-container">
+        <div class="processing-icon">⏳</div>
+        <h2>Processing Payment...</h2>
+        <p>Please wait while we confirm your payment and upload your files.</p>
+        <div class="processing-spinner"></div>
+      </div>
+    </div>
+
+    <!-- Success Section -->
+    <div id="successSection" style="display: none;">
+      <div class="success-container">
+        <div class="success-icon">✅</div>
+        <h2>Payment Successful!</h2>
+        <p>Your files are being uploaded to The Core.</p>
+        <div class="success-details">
+          <p>Order ID: <span id="orderId"></span></p>
+          <p>You will receive an email confirmation shortly.</p>
+        </div>
+        <div class="progress-container">
+          <div class="progress-label">
+            <span>Uploading Files</span>
+            <span id="uploadPercentage">0%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" id="uploadProgressBar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div id="errorMessage" style="display: none;"></div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="stripe-integration.js"></script>
 </body>
 </html>
