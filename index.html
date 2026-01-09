@@ -8,6 +8,35 @@
   <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
+  <!-- NAVIGATION HEADER -->
+  <div class="legacy-header">
+    <button class="nav-logo-button" onclick="openNavMenu()" aria-label="Open Navigation">
+      <img src="https://images.squarespace-cdn.com/content/v1/691aa8e868041070aacd9d84/a4f3b6fc-5b50-4d08-872a-bdca799d11c0/SQUARE+RENDER.png?format=300w" 
+           alt="Legacy Crew" 
+           class="legacy-logo">
+      <span class="nav-text">Navigation</span>
+    </button>
+  </div>
+  
+  <!-- Fullscreen Navigation Overlay -->
+  <div class="nav-overlay" id="navOverlay" onclick="closeNavMenu(event)">
+    <button class="nav-close" onclick="closeNavMenu(event)">✕</button>
+    
+    <div class="nav-menu" onclick="event.stopPropagation()">
+      <div class="nav-menu-item">
+        <a href="https://thelegacycrew.com">HOME</a>
+      </div>
+      
+      <div class="nav-menu-item">
+        <a href="https://thelegacycrew.com/roster">ROSTER</a>
+      </div>
+      
+      <div class="nav-menu-item">
+        <a href="https://thelegacycrew.com/services">SERVICES</a>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <header>
       <img src="https://i.imgur.com/Wwn9Drg.png" alt="Legacy Crew Logo" class="logo">
@@ -291,5 +320,40 @@
 
   <script src="script.js"></script>
   <script src="stripe-integration.js"></script>
+  
+  <!-- Navigation Script -->
+  <script>
+    function openNavMenu() {
+      const overlay = document.getElementById('navOverlay');
+      overlay.classList.add('active');
+      document.body.classList.add('menu-open');
+    }
+    
+    function closeNavMenu(event) {
+      // If clicking on a link, don't prevent default
+      if (event && event.target.tagName === 'A') {
+        return;
+      }
+      
+      // Prevent closing when clicking inside the menu content
+      if (event && event.target.closest('.nav-menu') && !event.target.closest('.nav-close')) {
+        return;
+      }
+      
+      const overlay = document.getElementById('navOverlay');
+      overlay.classList.remove('active');
+      document.body.classList.remove('menu-open');
+    }
+    
+    // Close menu with Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        const overlay = document.getElementById('navOverlay');
+        if (overlay.classList.contains('active')) {
+          closeNavMenu(event);
+        }
+      }
+    });
+  </script>
 </body>
 </html>
